@@ -1,0 +1,13 @@
+*.pyc
+server/*__pycache__
+server/db.sqlite3
+server/.DS_Store
+server/media
+server/static/app/
+server/static/bower_components/
+server/static/css/
+server/static/
+client/node_modules/
+client/static/bower_components
+.vagrant
+*.retry

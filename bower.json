@@ -1,0 +1,15 @@
+{
+  "name": "project",
+  "description": "Project boilerplate for django and angular 1.5.0",
+  "version": "0.1.0",
+  "homepage": "",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "angular": "~1.5.0",
+    "angular-ui-router": "1.0.7",
+    "restangular": "1.6.1",
+    "angular-toastr": "~2.1.1",
+    "jquery": "~3.3.1"
+  }
+}

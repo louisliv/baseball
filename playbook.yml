@@ -1,0 +1,69 @@
+- hosts: all
+  sudo: yes
+  vars:
+    http_port: 80
+    max_clients: 200
+    client_side: /vagrant/client
+    server_side: /vagrant/server
+    vagrant_dir: /vagrant
+  remote_user: vagrant
+  tasks:
+  - name: Install NPM Dependencies
+    command: sudo npm install -g bower chdir={{vagrant_dir}}
+    become: True
+    become_user: vagrant
+  - name: Install "gulp" node.js package globally.
+    npm:
+      name: gulp-cli
+      global: yes
+  - name: Install "gulp" node.js package locally
+    command: npm install gulp --no-bin-links chdir={{client_side}}
+    become: True
+  - name: Install "gulp-sass" node.js package locally
+    command: npm install gulp-sass --no-bin-links chdir={{client_side}}
+    become: True
+  - name: Run "gulp-build" to build css
+    command: npm run gulp-build chdir={{client_side}}
+    become: True
+  - name: Bower Install
+    command: bower install chdir={{vagrant_dir}}
+    ignore_errors: yes
+    register: bower_result
+    become: True
+    become_user: vagrant
+  - name: Re-Run Bower if first failed
+    command: bower install chdir={{vagrant_dir}}
+    when: bower_result|failed
+    become: True
+    become_user: vagrant
+  - name: ensure apache is at the latest version
+    package: name=apache2 state=present
+  - name: write the apache config file
+    apache2_module: name=rewrite state=present
+    notify:
+      - restart apache
+  - name: write the apache config file
+    template: src=/vagrant/directory.conf dest=/etc/apache2/sites-enabled/directory.conf
+    notify:
+      - restart apache
+  - name: ensure apache is running (and enable it at boot)
+    service: name=apache2 state=started enabled=yes
+  - name: migrate database
+    command: python manage.py migrate --noinput chdir={{server_side}}
+    become: True
+  - name: Django flush database
+    command: python manage.py flush --noinput chdir={{server_side}}
+    become: True
+    become_user: vagrant
+  - name: Django collectstatic
+    command: python manage.py collectstatic --noinput chdir={{server_side}}
+    become: True
+    become_user: vagrant
+    become_user: vagrant
+  - name: create super user
+    command: python manage.py create_superuser 'admin' 'admin' 'louis.livingston@gmail.com' chdir={{server_side}}
+    become: True
+    become_user: vagrant
+  handlers:
+    - name: restart apache
+      service: name=apache2 state=restarted
