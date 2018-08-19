@@ -6,8 +6,8 @@ Vagrant.configure("2") do |config|
     v.name = "project"
   end
   
-  config.vm.box = "ubuntu/trusty64"
-  config.vm.box_url = "https://atlas.hashicorp.com/ubuntu/boxes/trusty64"
+  config.vm.box = "bento/centos-7.2"
+  # config.vm.box_url = "https://atlas.hashicorp.com/ubuntu/boxes/trusty64"
   config.vm.provision :shell, path: "bootstrap.sh"
   config.vm.network :forwarded_port, guest: 80, host: 4567, host_ip: "127.0.0.1"
 

@@ -37,17 +37,17 @@
     become: True
     become_user: vagrant
   - name: ensure apache is at the latest version
-    package: name=apache2 state=present
+    package: name=httpd state=present
   - name: write the apache config file
     apache2_module: name=rewrite state=present
     notify:
       - restart apache
   - name: write the apache config file
-    template: src=/vagrant/directory.conf dest=/etc/apache2/sites-enabled/directory.conf
+    template: src=/vagrant/directory.conf dest=/etc/httpd/conf.d/directory.conf
     notify:
       - restart apache
   - name: ensure apache is running (and enable it at boot)
-    service: name=apache2 state=started enabled=yes
+    service: name=httpd state=started enabled=yes
   - name: migrate database
     command: python manage.py migrate --noinput chdir={{server_side}}
     become: True
@@ -66,4 +66,4 @@
     become_user: vagrant
   handlers:
     - name: restart apache
-      service: name=apache2 state=restarted
+      service: name=httpd state=restarted

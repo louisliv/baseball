@@ -1,0 +1,16 @@
+{
+	"name": "base-project",
+	"version": "0.0.1",
+	"description": "Base angular and django project",
+	"main": "./src/app/app.js",
+	"scripts": {
+		"gulp-build": "gulp sass"
+	},
+	"author": "Louis Livingston",
+	"devDependencies": {
+		"gulp": "^3.9.1"
+	},
+	"dependencies": {
+		"gulp-sass": "^4.0.1"
+	}
+}
