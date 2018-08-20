@@ -3,7 +3,7 @@
 
 Vagrant.configure("2") do |config|
   config.vm.provider "virtualbox" do |v|
-    v.name = "project"
+    v.name = "connor_music_project"
   end
   
   config.vm.box = "bento/centos-7.2"
