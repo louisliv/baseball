@@ -1,0 +1,23 @@
+.container {
+    padding-top: 25px;
+}
+
+[ui-sref] {
+    cursor: pointer;
+}
+
+.flex-row {
+    display: flex;
+
+    &.space-between {
+        justify-content: space-between;
+    }
+
+    &.v-center {
+        align-items: center;
+    }
+
+    &.flex-column {
+        flex-direction: column;
+    }
+}

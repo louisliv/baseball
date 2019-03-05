@@ -1,0 +1,31 @@
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4 offset-4">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Login</h4>
+                    <form name="login.loginForm" ng-submit="login.submit()">
+                        <div class="form-group">
+                            <label>Username</label>
+                            <input type="text" 
+                                class="form-control" 
+                                ng-model="login.loginData.username"
+                                placeholder="johndoe">
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" 
+                                class="form-control" 
+                                ng-model="login.loginData.password"
+                                placeholder="example#1">
+                        </div>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-success">Login</button>
+                        </div>
+                        <div class="text-center">Need an account? <a ui-sref="auth.register">Register Here</a></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

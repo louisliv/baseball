@@ -1,0 +1,40 @@
+.avatar {
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.small {
+    width: 42px;
+    height: 42px;
+}
+
+.medium {
+    width: 56px;
+    height: 56px;
+}
+
+.large {
+    width: 72px;
+    height: 72px;
+}
+
+.x_large {
+    width: 150px;
+    height: 150px;
+    font-size: 4rem !important;
+}
+
+.no_avatar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.no_avatar .avatar{
+    background-color: blue;
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}

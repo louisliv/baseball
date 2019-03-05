@@ -9,5 +9,9 @@ server/static/css/
 server/static/
 client/node_modules/
 client/static/bower_components
+client/static/js/
+client/static/css/styles.css
 .vagrant
+.vscode
+server/pip-selfcheck.json
 *.retry

@@ -1,0 +1,25 @@
+/* RGB */
+$primary-color: #007bff;
+$secondary-color: blue;
+$primary-text-color: grey;
+$white: #ffffff;
+$green: #28a745;
+
+$regular-font: 'Niramit', sans-serif;
+
+$footer-height: 40px;
+$fa-font-path: '../sass/webfonts';
+
+body {
+	color: $primary-text-color;
+	background-color: lightgrey;
+	font-family: $regular-font;
+}
+
+.video-thumbnail {
+	width: 100px;
+}
+
+.bold {
+	font-weight: bold;
+}

@@ -5,7 +5,7 @@ function extend (extention) {
 function Api (Restangular) {
 	var apiObject = {};
 
-	Restangular.setBaseUrl('http://127.0.0.1:4567/api/');
+	Restangular.setBaseUrl(location.origin + '/api/');
 
 	apiObject.createModel = function (modelName, modelExtensions) {
 		Restangular.extendModel(modelName, function (extentions) {

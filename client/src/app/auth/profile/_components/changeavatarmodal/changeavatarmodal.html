@@ -1,0 +1,29 @@
+<div class="modal-header">
+    <h3 class="modal-title" id="modal-title">Update Avatar</h3>
+</div>
+<div class="modal-body" id="modal-body">
+    <div class="row avatar-modal-input-group">
+        <div class="col-sm-12">
+            <div>Select an image file:</div>
+            <input type="file"
+                class="avatar-file-input"
+                avatar-file-on-change="handleFileSelect"
+                id="fileInput">
+        </div>
+    </div>
+    <div class="row img-crop-row">
+        <div class="col-sm-6 cropArea headshotModalCrop">
+            <img-crop image="myImage" 
+                result-image="myCroppedImage" 
+                area-type="circle">
+            </img-crop>
+        </div>
+        <div class="col-sm-6">
+            <img class="cropped-img" ng-src="{{myCroppedImage}}"/>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-danger" type="button" ng-click="modal.cancel()">Cancel</button>
+    <button class="btn btn-primary" type="button" ng-click="modal.ok()">OK</button>
+</div>

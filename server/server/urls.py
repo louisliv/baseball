@@ -1,7 +1,7 @@
 """server URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/1.9/topics/http/urls/
+    https://docs.djangoproject.com/en/1.11/topics/http/urls/
 Examples:
 Function views
     1. Add an import:  from my_app import views
@@ -18,15 +18,18 @@ from django.conf.urls import url, include
 from django.conf.urls.static import static
 from django.contrib import admin
 from rest_framework import routers
-from api.views import AuthViewSet
 from .views import index
+from medialibrary.views import MediaItemViewSet, CommentViewSet
+from siteauth.views import AuthViewSet, ProfileViewSet
 
 router = routers.DefaultRouter()
 router.register(r'auth', AuthViewSet, 'auth')
+router.register(r'profiles', ProfileViewSet, 'profiles')
+router.register(r'mediaitems', MediaItemViewSet, 'mediaitems')
+router.register(r'comments', CommentViewSet, 'comments')
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include(router.urls)),
-    url(r'^', index, name='index'),
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    url(r'^', index, name='index')
+]
