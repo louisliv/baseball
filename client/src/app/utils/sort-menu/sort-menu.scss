@@ -1,0 +1,22 @@
+sort-menu {
+    .sort-menu-container {
+        cursor: pointer;
+        
+        .fa-sort {
+            margin-right: 5px;
+        }
+    }
+
+    .popover {
+        border-radius: 0;
+        .popover-body {
+            padding: 0px;
+
+            .list-group-item {
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}

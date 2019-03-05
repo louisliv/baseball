@@ -1,0 +1,13 @@
+.navbar {
+    background-color: white;
+}
+
+.popover {
+    border-radius: 0;
+    border: 0;
+}
+
+.popover .list-group-item {
+    border-radius: 0;
+}
+

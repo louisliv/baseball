@@ -6,6 +6,12 @@
     client_side: /vagrant/client
     server_side: /vagrant/server
     vagrant_dir: /vagrant
+
+    mysql_db_username: project
+    mysql_db_password: "Nothing#1"
+    htpasswd_file: /etc/httpd/htpasswd/htpasswd
+    htpasswd_users:
+            - { name: vagrant, passwd: vagrant }
   remote_user: vagrant
   tasks:
   - name: Install NPM Dependencies
@@ -25,6 +31,9 @@
   - name: Run "gulp-build" to build css
     command: npm run gulp-build chdir={{client_side}}
     become: True
+  - name: Run "gulp-build-js" to build js
+    command: npm run gulp-build-js chdir={{client_side}}
+    become: True
   - name: Bower Install
     command: bower install chdir={{vagrant_dir}}
     ignore_errors: yes
@@ -36,18 +45,34 @@
     when: bower_result|failed
     become: True
     become_user: vagrant
-  - name: ensure apache is at the latest version
-    package: name=httpd state=present
-  - name: write the apache config file
-    apache2_module: name=rewrite state=present
-    notify:
-      - restart apache
+
+  ##############################################
+  # Apache
+  ##############################################
+
+  - name: Apache and Python WSGI will be present.
+    yum: name={{ item }} state=present
+    with_items: [httpd, mod_wsgi]
+    become: yes
+    become_method: sudo
   - name: write the apache config file
     template: src=/vagrant/directory.conf dest=/etc/httpd/conf.d/directory.conf
     notify:
       - restart apache
-  - name: ensure apache is running (and enable it at boot)
-    service: name=httpd state=started enabled=yes
+  - name: Add the Apache user to the vagrant users group.
+    command: chown apache:apache /vagrant/server/
+    become: yes
+    become_method: sudo
+  - name: Give Apache execute permissions for VirtualEnv.
+    command: chown apache:apache /vagrant/server/db.sqlite3
+    become: yes
+    become_method: sudo
+
+  - name: Latest version of pip will be present.
+    yum: name=python-pip state=latest
+    become: yes
+    become_method: sudo
+
   - name: migrate database
     command: python manage.py migrate --noinput chdir={{server_side}}
     become: True
@@ -62,6 +87,14 @@
     become_user: vagrant
   - name: create super user
     command: python manage.py create_superuser 'admin' 'admin' 'louis.livingston@gmail.com' chdir={{server_side}}
+    become: True
+    become_user: vagrant
+  - name: Install Watson
+    command: python manage.py installwatson chdir={{server_side}}
+    become: True
+    become_user: vagrant
+  - name: Build Watson
+    command: python manage.py buildwatson chdir={{server_side}}
     become: True
     become_user: vagrant
   handlers:
