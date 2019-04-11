@@ -1,9 +1,0 @@
-:local(.mediaitem) {
-    display: flex;
-    align-items: center;
-}
-:local(.mediaitem_img) {
-    width: 100px; 
-    height: inherit;
-    margin-right: 10px;
-}

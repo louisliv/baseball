@@ -3,7 +3,7 @@
 
 Vagrant.configure("2") do |config|
   config.vm.provider "virtualbox" do |v|
-    v.name = "connor_music_project"
+    v.name = "baseball"
   end
 
    ## set general project ownership, and permission

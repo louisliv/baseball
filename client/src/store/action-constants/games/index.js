@@ -1,0 +1,4 @@
+export default {
+    GAMES_GET_SUCCESS: 'GAMES_GET_SUCCESS',
+    GAMES_GET_FAIL: 'GAMES_GET_FAIL',
+}

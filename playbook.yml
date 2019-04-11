@@ -3,7 +3,7 @@
   vars:
     http_port: 80
     max_clients: 200
-    client_side: /vagrant/client
+    client_side: /vagrant/client-react
     server_side: /vagrant/server
     vagrant_dir: /vagrant
 
@@ -14,37 +14,6 @@
             - { name: vagrant, passwd: vagrant }
   remote_user: vagrant
   tasks:
-  - name: Install NPM Dependencies
-    command: sudo npm install -g bower chdir={{vagrant_dir}}
-    become: True
-    become_user: vagrant
-  - name: Install "gulp" node.js package globally.
-    npm:
-      name: gulp-cli
-      global: yes
-  - name: Install "gulp" node.js package locally
-    command: npm install gulp --no-bin-links chdir={{client_side}}
-    become: True
-  - name: Install "gulp-sass" node.js package locally
-    command: npm install gulp-sass --no-bin-links chdir={{client_side}}
-    become: True
-  - name: Run "gulp-build" to build css
-    command: npm run gulp-build chdir={{client_side}}
-    become: True
-  - name: Run "gulp-build-js" to build js
-    command: npm run gulp-build-js chdir={{client_side}}
-    become: True
-  - name: Bower Install
-    command: bower install chdir={{vagrant_dir}}
-    ignore_errors: yes
-    register: bower_result
-    become: True
-    become_user: vagrant
-  - name: Re-Run Bower if first failed
-    command: bower install chdir={{vagrant_dir}}
-    when: bower_result|failed
-    become: True
-    become_user: vagrant
 
   ##############################################
   # Apache
@@ -87,6 +56,10 @@
     become_user: vagrant
   - name: create super user
     command: python manage.py create_superuser 'admin' 'admin' 'louis.livingston@gmail.com' chdir={{server_side}}
+    become: True
+    become_user: vagrant
+  - name: populate teams in database
+    command: python manage.py populate_teams 2019 chdir={{server_side}}
     become: True
     become_user: vagrant
   - name: Install Watson

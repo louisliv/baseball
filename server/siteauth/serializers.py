@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Profile
+from .models import Profile, Todo
 
 class ProfileSerializer(serializers.ModelSerializer):
     email = serializers.SerializerMethodField()
@@ -9,11 +9,12 @@ class ProfileSerializer(serializers.ModelSerializer):
     last_name = serializers.SerializerMethodField()
     user = serializers.SerializerMethodField()
     avatar = serializers.SerializerMethodField()
+    teams = serializers.SerializerMethodField()
 
     class Meta:
         model = Profile
         fields = ('id', 'email', 'username', 'first_name',
-                  'last_name', 'user', 'avatar')
+                  'last_name', 'user', 'avatar', 'teams')
 
     def get_user(self, obj):
         return obj.user.id
@@ -36,3 +37,12 @@ class ProfileSerializer(serializers.ModelSerializer):
             return url
         except:
             return None
+
+    def get_teams(self, obj):
+        return obj.get_teams()
+
+class TodoSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Todo
+        fields = ('id', 'title', 'completed')

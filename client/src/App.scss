@@ -1,0 +1,27 @@
+.sidebar-col {
+    background-color: $primary-color;
+}
+
+.flex-row {
+    display: flex;
+}
+
+.flex-column {
+    flex-direction: column;
+}
+
+.flex-center {
+    align-items: center;
+}
+
+.flex-align-beginning {
+    align-items: baseline !important;
+}
+
+.flex-space-between {
+    justify-content: space-between;
+}
+
+.flex-by-half {
+    flex: 1
+}

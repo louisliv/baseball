@@ -1,6 +1,0 @@
-const AUTH_CONSTANTS = {
-    SET_CURRENT: 'SET_CURRENT',
-    CLEAR_CURRENT: 'CLEAR_CURRENT'
-}
-
-export default AUTH_CONSTANTS;

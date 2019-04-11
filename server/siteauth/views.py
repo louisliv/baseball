@@ -10,15 +10,30 @@ from rest_framework import permissions, viewsets
 from rest_framework.response import Response
 from rest_framework import status, views
 
-from .models import Profile
-from .serializers import ProfileSerializer
+from .models import Profile, Todo
+from .serializers import ProfileSerializer, TodoSerializer
 from django.contrib import auth
 
 from base64 import b64decode
 from django.core.files.base import ContentFile
 import sys
-from medialibrary.models import MediaItem
-from medialibrary.serializers import MediaItemSerializer
+
+class TodoViewSet(viewsets.ModelViewSet):
+    serializer_class = TodoSerializer
+    queryset = Todo.objects.all()
+    pagination_class = None
+
+    @action(methods=['post', 'put', 'patch'], detail=True,
+        url_path='mark-completed', url_name='mark_completed')
+    def mark_completed(self, request, pk=None):
+        todo = self.get_object()
+
+        todo.completed = not todo.completed
+
+        todo.save()
+
+        return Response(TodoSerializer(todo).data,
+            status=status.HTTP_200_OK)
 
 class ProfileViewSet(viewsets.ModelViewSet):
     serializer_class = ProfileSerializer
@@ -67,15 +82,6 @@ class ProfileViewSet(viewsets.ModelViewSet):
                 'message': 'Avatar could not be updated with received data.'
             }, status=status.HTTP_400_BAD_REQUEST)
 
-    @action(methods=['get'], detail=True)
-    def uploaded_media(self, request, pk=None):
-        profile = self.get_object()
-
-        mediaitems = profile.user.mediaitem_set.all()
-        serializer = MediaItemSerializer(mediaitems, many=True)
-
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
 class AuthViewSet(viewsets.ViewSet):
     @action(methods=['get'], detail=False)
     def current(self, request):
@@ -83,22 +89,37 @@ class AuthViewSet(viewsets.ViewSet):
             profile = Profile.objects.get(user = request.user.id)
             return Response(ProfileSerializer(profile).data, status=status.HTTP_200_OK)
         except Profile.DoesNotExist:
-            return Response(None, status.HTTP_200_OK)
+            return Response({}, status.HTTP_200_OK)
 
-        return Response(None, status.HTTP_200_OK)
+        return Response({}, status.HTTP_200_OK)
+    
+    @action(methods=['put'], detail=False)
+    def add_team(self, request):
+        try:
+            profile = Profile.objects.get(user = request.user.id)
+
+            profile_teams = profile.get_teams()
+
+            data = request.data
+            team_id = data.get('teamId', None)
+
+            if team_id:
+                profile_teams.append(team_id)
+
+            profile.set_teams(profile_teams)
+            profile.save()
+            profile.refresh_from_db()
+
+            return Response(ProfileSerializer(profile).data, status=status.HTTP_200_OK)
+        except Profile.DoesNotExist:
+            return Response({}, status.HTTP_400_BAD_REQUEST)
 
     @action(methods=['get'], detail=False)
     def is_authenticated(self, request):
         return Response(request.user.is_authenticated())
 
-    @action(methods=['post', 'get'], detail=False)
+    @action(methods=['post'], detail=False)
     def login(self, request):
-        if request.method == 'GET':
-            if request.user.is_authenticated():
-                profile = Profile.objects.get(user=request.user.id)
-                serializer = ProfileSerializer(profile)
-                return Response(serializer.data, status=status.HTTP_200_OK)
-            return Response({}, status=status.HTTP_400_BAD_REQUEST)
         if request.method == 'POST':
             data = request.data
             username = data.get('username', None)

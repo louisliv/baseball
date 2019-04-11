@@ -18,18 +18,26 @@ from django.conf.urls import url, include
 from django.conf.urls.static import static
 from django.contrib import admin
 from rest_framework import routers
-from .views import index
-from medialibrary.views import MediaItemViewSet, CommentViewSet
-from siteauth.views import AuthViewSet, ProfileViewSet
+from siteauth.views import (AuthViewSet, ProfileViewSet, 
+    TodoViewSet)
+from baseball.views import (TeamViewSet, DivisionViewSet, 
+    LeagueViewSet, PlayerViewSet, Team40ManRosterViewSet,
+    PlayerStatsViewSet)
+
+from scorebook.views import ScorecardViewSet
 
 router = routers.DefaultRouter()
 router.register(r'auth', AuthViewSet, 'auth')
 router.register(r'profiles', ProfileViewSet, 'profiles')
-router.register(r'mediaitems', MediaItemViewSet, 'mediaitems')
-router.register(r'comments', CommentViewSet, 'comments')
+router.register(r'teams', TeamViewSet, 'teams')
+router.register(r'divisions', DivisionViewSet, 'divisions')
+router.register(r'leagues', LeagueViewSet, 'leagues')
+router.register(r'team_40_man', Team40ManRosterViewSet, 'team_40_man')
+router.register(r'players', PlayerViewSet, 'players')
+router.register(r'player_stats', PlayerStatsViewSet, 'player_stats')
+router.register(r'scorecards', ScorecardViewSet, 'scorecards')
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include(router.urls)),
-    url(r'^', index, name='index')
 ]

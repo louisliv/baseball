@@ -15,3 +15,8 @@ pip install djangorestframework
 pip install django-filter==1.1
 pip install django-watson
 pip install pillow
+pip install numpy
+pip install pandas
+pip install requests
+pip install jsonfield
+pip install django-cors-headers
