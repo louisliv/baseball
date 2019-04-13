@@ -13,7 +13,6 @@ import {
     AvGroup, 
     AvInput, 
     AvFeedback,
-    AvField
 } from 'availity-reactstrap-validation';
 
 import { connect } from 'react-redux';

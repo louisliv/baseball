@@ -1,6 +1,6 @@
 import Actions from 'store/action-constants/scorecards';
 
-import ScorecardApi from 'api/models-mlb/scorecards/scorecards';
+import ScorecardApi from 'api/models-server/scorecards/scorecards';
 
 import {store} from 'index';
 
@@ -43,7 +43,7 @@ export default {
             .then((response) => {
                 return store.dispatch({
                     type: Actions.SCORECARDS_GET_BY_GAME_SUCCESS,
-                    payload: {scorecard:response}
+                    payload: {scorecard:response[0]}
                 })
             })
             .catch(() => {

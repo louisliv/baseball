@@ -2,6 +2,7 @@ import React from 'react';
 import { UIView } from '@uirouter/react';
 import TeamList from './teamList';
 import TeamSchedule from './teamSchedule';
+import SetLineups from './game/set-lineups';
 import Game from './game';
 
 const scorebook = {
@@ -32,7 +33,15 @@ const game = {
     requireAuth: true
 }
 
+const setLineups = {
+    name: 'scorebook.set-lineups',
+    url: '/game/:gameId/:scorecardId/set-lineups',
+    component: SetLineups,
+    requireAuth: true
+}
+
 export { scorebook };
 export { teamList };
 export { teamSchedule };
 export { game };
+export { setLineups };

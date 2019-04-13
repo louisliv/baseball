@@ -1,7 +1,13 @@
 import homeState from 'home';
 import { teamsState, teamDetail, teams } from 'teams';
 import { players, playerDetails } from 'players';
-import { scorebook, teamList, teamSchedule, game } from 'scorebook';
+import { 
+    scorebook, 
+    teamList, 
+    teamSchedule, 
+    game,
+    setLineups
+} from 'scorebook';
 import { auth, login } from 'auth';
 import dashboardState from 'dashboard';
 import { UIRouterReact, servicesPlugin, pushStateLocationPlugin } from '@uirouter/react';
@@ -56,6 +62,7 @@ const routes = [
     teamList,
     teamSchedule,
     game,
+    setLineups,
     auth,
     login
 ]

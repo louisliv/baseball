@@ -9,7 +9,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     last_name = serializers.SerializerMethodField()
     user = serializers.SerializerMethodField()
     avatar = serializers.SerializerMethodField()
-    teams = serializers.SerializerMethodField()
+    teams = serializers.ListField(child=serializers.IntegerField())
 
     class Meta:
         model = Profile
@@ -37,9 +37,6 @@ class ProfileSerializer(serializers.ModelSerializer):
             return url
         except:
             return None
-
-    def get_teams(self, obj):
-        return obj.get_teams()
 
 class TodoSerializer(serializers.ModelSerializer):
 

@@ -1,7 +1,6 @@
 // Site Overrides
 @import './utils/scss/variables.scss';
 
-@import './App.scss';
 @import './sidebar/sidebar.scss';
 @import './navbar/navbar.scss';
 @import './home/home.scss';
@@ -12,3 +11,4 @@
 @import '~react-big-calendar/lib/css/react-big-calendar.css';
 
 @import "~react-vis/dist/style";
+@import './App.scss';

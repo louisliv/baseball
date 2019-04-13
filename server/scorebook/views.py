@@ -26,6 +26,7 @@ class ScorecardViewSet(viewsets.ModelViewSet):
         game_id = request.data.get('game', None)
         scorecard, created = Scorecard.objects.get_or_create(
             game_id=game_id,
-            user=request.user
+            user=request.user,
+            data=request.data.get('data', {})
         )
         return Response(ScorecardSerializer(scorecard).data, status=status.HTTP_201_CREATED)

@@ -15,6 +15,7 @@
     "react-big-calendar": "^0.20.4",
     "react-bootstrap-table-next": "^3.0.1",
     "react-dom": "^16.8.3",
+    "react-json-view": "^1.19.1",
     "react-moment": "^0.8.4",
     "react-redux": "^6.0.1",
     "react-resize-detector": "^4.0.5",

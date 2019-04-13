@@ -34,7 +34,8 @@ class GameImg extends Component {
                 width: dimensions.width,
                 height: height,
                 awayPoints: this.calculateAwayPoints(dimensions.width, height),
-                homePoints: this.calculateHomePoints(dimensions.width, height)
+                homePoints: this.calculateHomePoints(dimensions.width, height),
+                infoBoxPoints: this.calculateInfoPoints(dimensions.width, height)
             })
         }
     }
@@ -46,6 +47,7 @@ class GameImg extends Component {
                 awayHeight: dimensions.height,
                 awayWidth: dimensions.width
             })
+            this.setLogoPoints();
         }
     }
 
@@ -66,7 +68,8 @@ class GameImg extends Component {
             width: width,
             height: resizeHeight,
             awayPoints: this.calculateAwayPoints(width, resizeHeight),
-            homePoints: this.calculateHomePoints(width, resizeHeight)
+            homePoints: this.calculateHomePoints(width, resizeHeight),
+            infoBoxPoints: this.calculateInfoPoints(width, resizeHeight)
         })
         this.setLogoPoints();
     }
@@ -83,8 +86,6 @@ class GameImg extends Component {
         let awayY = (halfY - halfAwayHeight)
         let homeX = (quarter3X - halfHomeWidth)
         let homeY = (halfY - halfHomeHeight)
-
-        console.log(awayX, awayY, homeX, homeY)
 
         this.setState({
             awayX: !isNaN(awayX) ? awayX: 0,
@@ -108,6 +109,15 @@ class GameImg extends Component {
         let leftBottom = [width, height]
         let rightUp = [(width * .55), height]
         let rightBottom = [(width * .45), 0]
+
+        return [leftUp, leftBottom, rightUp, rightBottom];
+    }
+
+    calculateInfoPoints(width, height) {
+        let leftUp = [0, height]
+        let leftBottom = [0, (height-60)]
+        let rightUp = [width, (height-60)]
+        let rightBottom = [width, height]
 
         return [leftUp, leftBottom, rightUp, rightBottom];
     }
@@ -139,6 +149,21 @@ class GameImg extends Component {
                         xlinkHref={Constants.getTeamLogo(this.props.homeTeam.id)} 
                         x={this.state.homeX} 
                         y={this.state.homeY}/>
+                    <g>
+                        <polygon points={this.state.infoBoxPoints}
+                            style={{
+                                fill: 'black',
+                                fillOpacity: 0.6
+                            }}
+                        />
+                        <text x="50%" 
+                            y = {this.state.height - 30}
+                            dominantBaseline="middle"
+                            textAnchor="middle"
+                            fill="white"
+                            fontSize="20px">{this.props.date}
+                        </text>
+                    </g>
                 </svg>
             </div>
         )
