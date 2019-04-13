@@ -74,6 +74,7 @@ export default {
                 })
             })
     },
+    getRosterByDate: (id, date) => {},
     getCoaches: (id) => {
         let currentState = store.getState();
         if (currentState.teams.coachesByTeamId[id]) {

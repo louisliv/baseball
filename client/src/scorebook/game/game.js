@@ -43,7 +43,7 @@ class Game extends Component {
         }
         ScorecardActions.create(data)
             .then((response) => {
-                router.stateService.go('scorebook.game.set-lineups', {
+                router.stateService.go('scorebook.set-lineups', {
                     gameId: this.props.$stateParams.gameId,
                     scorecardId: this.props.scorecard.id
                 })
@@ -52,7 +52,7 @@ class Game extends Component {
 
     startSetLineups() {
         console.log(this.props);
-        router.stateService.go('scorebook.game.set-lineups', {
+        router.stateService.go('scorebook.set-lineups', {
             gameId: this.props.$stateParams.gameId,
             scorecardId: this.props.scorecard.id
         })
@@ -80,7 +80,7 @@ class Game extends Component {
                                                 Start Scorecard
                                             </Button>
                                         }
-                                        {this.props.scorecard.startersSet && 
+                                        {!this.props.scorecard.startersSet && 
                                             <Button color="success"
                                                 onClick={this.startSetLineups}>
                                                 Set Lineups
