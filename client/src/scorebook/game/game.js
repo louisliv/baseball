@@ -76,6 +76,7 @@ class Game extends Component {
             return (
                 <Row>
                     <Col xs="12">
+                        Test
                         <Card>
                             <GameImg 
                                 awayTeam={awayTeam.team} 
