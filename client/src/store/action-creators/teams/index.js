@@ -3,6 +3,7 @@ import Actions from 'store/action-constants/teams';
 import TeamApi from 'api/models-mlb/teams/teams';
 
 import {store} from 'index';
+import Constants from 'utils/constants';
 
 export default {
     getAll: () => {
@@ -74,7 +75,36 @@ export default {
                 })
             })
     },
-    getRosterByDate: (id, date) => {},
+    getRosterByDate: (id, date) => {
+        let currentState = store.getState();
+        let formattedDate = Constants.storeDateFormatter(date);
+        let apiDate = Constants.apiDateFormatter(date);
+        if (currentState.teams.byDate[id] && 
+            currentState.teams.byGame[id][formattedDate]) {
+            return new Promise(() => {
+                return store.dispatch({
+                    type: Actions.TEAMS_GET_BY_DATE_SUCCESS,
+                    payload: {returnCurrent: true}
+                })
+            })
+        }
+        return TeamApi.gamedayRoster(id, apiDate)
+            .then((response) => {
+                return store.dispatch({
+                    type: Actions.TEAMS_GET_BY_DATE_SUCCESS,
+                    payload: {
+                        teamId:id,
+                        date:formattedDate,
+                        list:response.roster
+                    }
+                })
+            })
+            .catch(() => {
+                return store.dispatch({
+                    type: Actions.TEAMS_GET_BY_DATE_FAIL
+                })
+            })
+    },
     getCoaches: (id) => {
         let currentState = store.getState();
         if (currentState.teams.coachesByTeamId[id]) {

@@ -8,11 +8,15 @@ var initialState = {
     byId: {},
     listHasFetched: false,
     rostersByTeamId: {},
-    coachesByTeamId: {}
+    coachesByTeamId: {},
+    byDate: {},
 };
 
 function teams(state = initialState, action) {
     let newById;
+    let newByDate;
+    let teamId;
+    let date;
 
     switch (action.type) {
         case Actions.TEAMS_GET_ALL_SUCCESS:
@@ -22,6 +26,7 @@ function teams(state = initialState, action) {
                 listHasFetched: true,
                 rostersByTeamId: state.rostersByTeamId,
                 coachesByTeamId: state.coachesByTeamId,
+                byDate: state.byDate
             })
         case Actions.TEAMS_GET_SUCCESS:
             if (state.listHasFetched && state.byId[action.payload]) {
@@ -37,6 +42,7 @@ function teams(state = initialState, action) {
                 listHasFetched: state.listHasFetched,
                 rostersByTeamId: state.rostersByTeamId,
                 coachesByTeamId: state.coachesByTeamId,
+                byDate: state.byDate
             })
         case Actions.TEAMS_GET_ROSTER_SUCCESS:
             if (state.rostersByTeamId[action.payload]) {
@@ -52,6 +58,30 @@ function teams(state = initialState, action) {
                 listHasFetched: state.listHasFetched,
                 rostersByTeamId: newById,
                 coachesByTeamId: state.coachesByTeamId,
+                byDate: state.byDate
+            })
+        case Actions.TEAMS_GET_BY_DATE_SUCCESS:
+            if (action.payload.returnCurrent) {
+                return state
+            }
+
+            newByDate = _.clone(state.byDate);
+            teamId = action.payload.teamId;
+            date = action.payload.date
+
+            if (!newByDate[teamId]) {
+                newByDate[teamId] = {}
+            }
+
+            newByDate[teamId][date] = action.payload.list
+
+            return Object.assign({}, state, {
+                raw: state.raw,
+                byId: state.byId,
+                listHasFetched: state.listHasFetched,
+                rostersByTeamId: state.rostersByTeamId,
+                coachesByTeamId: state.coachesByTeamId,
+                byDate: newByDate
             })
         case Actions.TEAMS_GET_COACHES_SUCCESS:
             if (state.coachesByTeamId[action.payload]) {
@@ -67,6 +97,7 @@ function teams(state = initialState, action) {
                 listHasFetched: state.listHasFetched,
                 rostersByTeamId: state.rostersByTeamId,
                 coachesByTeamId: newById,
+                byDate: state.byDate
             })
         
         default:

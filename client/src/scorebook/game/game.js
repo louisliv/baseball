@@ -19,6 +19,7 @@ import {
     Button
 } from 'reactstrap'
 import GameImg from './_components/gameimg'; 
+import LineupTable from './_components/lineup-table';
 
 class Game extends Component {
     constructor(props) {
@@ -42,19 +43,28 @@ class Game extends Component {
             }
         }
         ScorecardActions.create(data)
-            .then((response) => {
+            .then(() => {
+                let date = Constants.storeDateFormatter(this.props.game.gameDate);
+                console.log(date);
                 router.stateService.go('scorebook.set-lineups', {
                     gameId: this.props.$stateParams.gameId,
-                    scorecardId: this.props.scorecard.id
+                    scorecardId: this.props.scorecard.id,
+                    awayTeamId: this.props.game.teams.away.team.id,
+                    homeTeamId: this.props.game.teams.home.team.id,
+                    date: date
                 })
             })
     }
 
     startSetLineups() {
-        console.log(this.props);
+        let date = Constants.storeDateFormatter(this.props.game.gameDate);
+        console.log(date);
         router.stateService.go('scorebook.set-lineups', {
             gameId: this.props.$stateParams.gameId,
-            scorecardId: this.props.scorecard.id
+            scorecardId: this.props.scorecard.id,
+            awayTeamId: this.props.game.teams.away.team.id,
+            homeTeamId: this.props.game.teams.home.team.id,
+            date: Constants.storeDateFormatter(this.props.game.gameDate)
         })
     }
 
@@ -80,7 +90,7 @@ class Game extends Component {
                                                 Start Scorecard
                                             </Button>
                                         }
-                                        {!this.props.scorecard.startersSet && 
+                                        {!isEmpty(this.props.scorecard) && !this.props.scorecard.data.startersSet && 
                                             <Button color="success"
                                                 onClick={this.startSetLineups}>
                                                 Set Lineups
@@ -88,6 +98,24 @@ class Game extends Component {
                                         }
                                     </Col>
                                 </Row>
+                                {!isEmpty(this.props.scorecard) && this.props.scorecard.data.startersSet &&
+                                    <Row>
+                                        <Col xs="6">
+                                            <Card>
+                                                <CardBody>
+                                                    <LineupTable lineup={this.props.scorecard.data.lineups.awayTeam}/>
+                                                </CardBody>
+                                            </Card>
+                                        </Col>
+                                        <Col xs="6">
+                                            <Card>
+                                                <CardBody>
+                                                    <LineupTable lineup={this.props.scorecard.data.lineups.homeTeam}/>        
+                                                </CardBody>
+                                            </Card>
+                                        </Col>
+                                    </Row>
+                                }
                             </CardBody>
                         </Card>
                     </Col>

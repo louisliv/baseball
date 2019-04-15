@@ -82,7 +82,6 @@ class TeamList extends Component {
         AuthActions.addTeam(this.state.values)
             .then(() => {
                 this.setState({values:_.clone(this.defaultModel)})
-                console.log(this.state)
             })
     }
 

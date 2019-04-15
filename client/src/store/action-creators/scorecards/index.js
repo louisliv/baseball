@@ -65,5 +65,19 @@ export default {
                     type: Actions.SCORECARDS_ADD_FAIL
                 })
             })
+    },
+    update: (id, data) => {
+        return ScorecardApi.one(id).put(data)
+            .then((response) => {
+                return store.dispatch({
+                    type: Actions.SCORECARDS_UPDATE_SUCCESS,
+                    payload: {scorecard:response}
+                })
+            })
+            .catch(() => {
+                return store.dispatch({
+                    type: Actions.SCORECARDS_UPDATE_FAIL
+                })
+            })
     }
 }

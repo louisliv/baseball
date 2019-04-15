@@ -1,3 +1,5 @@
+import Constants from 'utils/constants';
+
 export default {
     one: (teams, id) => {
         return teams.byId[id] ? teams.byId[id] : {}
@@ -13,5 +15,11 @@ export default {
     },
     idList: (teams) => {
         return teams.byId ? teams.byId : {}
+    },
+    rosterByDate: (teams, teamId, date) => {
+        teamId = parseInt(teamId);
+        let formattedDate = Constants.storeDateFormatter(date);
+        return teams.byDate[teamId] && teams.byDate[teamId][formattedDate] ? 
+            teams.byDate[teamId][formattedDate] : [];
     }
 };

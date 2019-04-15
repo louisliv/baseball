@@ -16,7 +16,51 @@ class Constants {
             RIGHT_FIELD: "9",
             DESIGNATED_HITTER: "D"
         }
+        this.positionAbreviations = [
+            {
+                label: 'P',
+                value: 1
+            },
+            {
+                label: 'C',
+                value: 2
+            },
+            {
+                label: '1B',
+                value: 3
+            },
+            {
+                label: '2B',
+                value: 4
+            },
+            {
+                label: '3B',
+                value: 5
+            },
+            {
+                label: 'SS',
+                value: 6
+            },
+            {
+                label: 'LF',
+                value: 7
+            },
+            {
+                label: 'CF',
+                value: 8
+            },
+            {
+                label: 'RF',
+                value: 9
+            },
+            {
+                label: 'DH',
+                value: 10
+            },
+        ]
         this.DATE_FORMAT = 'MMMM D, YYYY'
+        this.STORE_DATE_FORMAT = 'MMDDYYYY'
+        this.API_DATE_FORMAT = 'MM/DD/YYYY'
 
         this.DATE_TIME_FORMAT = 'MMMM D, YYYY h:mm a'
         
@@ -331,6 +375,24 @@ class Constants {
         ]
     }
 
+    storeDateFormatter(date) {
+        if (moment(date, this.STORE_DATE_FORMAT).isValid()) {
+            return date;
+        }
+        let formattedDate;
+        formattedDate = moment(date).format(this.STORE_DATE_FORMAT);
+        return formattedDate.toLocaleString();
+    }
+
+    apiDateFormatter(date) {
+        let formattedDate;
+        if (moment(date, this.STORE_DATE_FORMAT).isValid()) {
+            formattedDate = moment(date, this.STORE_DATE_FORMAT).format(this.API_DATE_FORMAT);
+        } else {
+            formattedDate = moment(date).format(this.API_DATE_FORMAT);
+        }
+        return formattedDate.toLocaleString();
+    }
 
     dateFormatter(date) {
         let formattedDate = moment(date).format(this.DATE_FORMAT);

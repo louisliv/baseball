@@ -35,7 +35,7 @@ const game = {
 
 const setLineups = {
     name: 'scorebook.set-lineups',
-    url: '/game/:gameId/:scorecardId/set-lineups',
+    url: '/game/:gameId/scorecard/:scorecardId/away/:awayTeamId/home/:homeTeamId/date/:date/set-lineups',
     component: SetLineups,
     requireAuth: true
 }

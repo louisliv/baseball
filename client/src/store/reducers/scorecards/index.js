@@ -37,6 +37,7 @@ function scorecards(state = initialState, action) {
             })
 
         case Actions.SCORECARDS_ADD_SUCCESS:
+        case Actions.SCORECARDS_UPDATE_SUCCESS:
             newById = _.clone(state.byId);
             newById[action.payload.scorecard.id] = action.payload.scorecard;
             newByGame = _.clone(state.byGame);

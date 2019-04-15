@@ -9,10 +9,10 @@ import {
     CardTitle,
     Button
 } from 'reactstrap';
-import ReactJson from 'react-json-view';
 
 import { connect } from 'react-redux';
 import { router } from 'router';
+import Constants from 'utils/constants';
 
 import TeamActions from 'store/action-creators/teams';
 import TeamSelectors from 'store/selectors/teams';
@@ -34,13 +34,34 @@ class SetLineups extends Component {
     }
 
     componentWillMount() {
-        GameActions.get(this.props.$stateParams.gameId);
+        GameActions.get(this.props.$stateParams.gameId)
+            .then((response) => {
+            });
+        TeamActions.getRosterByDate(
+            this.props.$stateParams.awayTeamId,
+            this.props.$stateParams.date
+        );
+        TeamActions.getRosterByDate(
+            this.props.$stateParams.homeTeamId,
+            this.props.$stateParams.date
+        );
         ScorecardActions.getByGame(this.props.$stateParams.gameId, this.props.currentUser.id)
     }
 
     onSubmit(event) {
+        let scorecard = _.clone(this.props.scorecard);
+        scorecard.data.lineups = {
+            awayTeam: this.state.awayTeam,
+            homeTeam: this.state.homeTeam
+        }
+        scorecard.data.startersSet = true;
         event.preventDefault();
-        console.log(this.state);
+        ScorecardActions.update(this.props.scorecard.id, scorecard)
+            .then((response) => {
+                router.stateService.go('scorebook.game', {
+                    gameId:this.props.$stateParams.gameId
+                })
+            })
     }
 
     onFormChange(values, isHomeTeam) {
@@ -52,33 +73,19 @@ class SetLineups extends Component {
     }
 
     render() {
-        let scaryAnimals = [
-            { label: "Alligators", value: 1 },
-            { label: "Crocodiles", value: 2 },
-            { label: "Sharks", value: 3 },
-            { label: "Small crocodiles", value: 4 },
-            { label: "Smallest crocodiles", value: 5 },
-            { label: "Snakes", value: 6 },
-        ];
-        let niceAnimals = [
-            { label: "Bunny", value: 7 },
-            { label: "Puppy", value: 8 },
-            { label: "Kitten", value: 9 },
-            { label: "Koala", value: 10 },
-            { label: "Owl", value: 11 },
-            { label: "Pig", value: 12 },
-        ];
-        if (!_.isEmpty(this.props.game)) {
+        if (!_.isEmpty(this.props.game) && !_.isEmpty(this.props.awayTeamRoster) && !_.isEmpty(this.props.homeTeamRoster)) {
             return (
                 <Row className="team-schedule">
-                    <Col xs="12" style={{minHeight: '600px'}}>
-                        <ReactJson src={this.props.scorecard} />
+                    <Col xs="12">
+                        <h2>{Constants.apiDateFormatter(this.props.game.gameDate)}</h2>
                     </Col>
                     <Col xs="12" md="6">
                         <Card>
                             <CardBody>
                                 <CardTitle><h3>{this.props.game.teams.away.team.name}</h3></CardTitle>
-                                <LineupForm roster={scaryAnimals} onChange={(values) => this.onFormChange(values, false)}/>
+                                <LineupForm 
+                                    roster={this.props.awayTeamRoster} 
+                                    onChange={(values) => this.onFormChange(values, false)}/>
                             </CardBody>
                         </Card>
                     </Col>
@@ -86,7 +93,9 @@ class SetLineups extends Component {
                         <Card>
                             <CardBody>
                                 <CardTitle><h3>{this.props.game.teams.home.team.name}</h3></CardTitle>
-                                <LineupForm roster={niceAnimals} onChange={(values) => this.onFormChange(values, true)}/>
+                                <LineupForm 
+                                    roster={this.props.homeTeamRoster} 
+                                    onChange={(values) => this.onFormChange(values, true)}/>
                             </CardBody>
                         </Card>
                     </Col>
@@ -107,8 +116,16 @@ const mapStateToProps = (state, ownProps) => {
         game: GameSelectors.one(state.games, ownProps.$stateParams.gameId),
         scorecard: ScorecardSelectors.byGame(state.scorecards, 
             ownProps.$stateParams.gameId, state.currentUser.id),
-        awayTeamRoster: TeamSelectors.rosterByDate(state.teams, 
-            GameSelectors.one(state.games, ownProps.$stateParams.gameId).gameDate)
+        awayTeamRoster: TeamSelectors.rosterByDate(
+            state.teams,
+            ownProps.$stateParams.awayTeamId,
+            ownProps.$stateParams.date
+        ),
+        homeTeamRoster: TeamSelectors.rosterByDate(
+            state.teams,
+            ownProps.$stateParams.homeTeamId,
+            ownProps.$stateParams.date
+        )
     }
 }
 

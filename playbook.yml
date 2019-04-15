@@ -34,10 +34,6 @@
     command: chown apache:apache /vagrant/server/
     become: yes
     become_method: sudo
-  - name: Give Apache execute permissions for VirtualEnv.
-    command: chown apache:apache /vagrant/server/db.sqlite3
-    become: yes
-    become_method: sudo
 
   - name: Latest version of pip will be present.
     yum: name=python-pip state=latest
