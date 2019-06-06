@@ -124,7 +124,7 @@ class GameImg extends Component {
 
     render () {
         return (
-            <div ref={this.refCallback} style={{height: this.state.height}}>
+            <div ref={this.refCallback}>
                 <ReactResizeDetector handleWidth handleHeight onResize={this.onResize} />
                 <svg width={this.state.width} height={this.state.height}>
                     <polygon points={this.state.awayPoints} 

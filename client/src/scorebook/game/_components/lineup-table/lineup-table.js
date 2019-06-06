@@ -13,7 +13,7 @@ class LineupTable extends Component {
 
         _.forEach(this.props.lineup, (player, key) => {
             batters.push(
-                <tr>
+                <tr key={key}>
                     <th scope="row">{key}</th>
                     <td>{player.person.fullName}</td>
                     <td>{player.gameDayPosition}</td>

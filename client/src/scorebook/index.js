@@ -4,6 +4,7 @@ import TeamList from './teamList';
 import TeamSchedule from './teamSchedule';
 import SetLineups from './game/set-lineups';
 import Game from './game';
+import Scorecard from './scorecard';
 
 const scorebook = {
     parent: 'app',
@@ -40,8 +41,19 @@ const setLineups = {
     requireAuth: true
 }
 
+const scorecard = {
+    name: 'scorecard',
+    url: '/scorecard/:scorecardId',
+    data: {
+        excludeSidebar: true
+    },
+    requireAuth: true,
+    component: Scorecard,
+}
+
 export { scorebook };
 export { teamList };
 export { teamSchedule };
 export { game };
 export { setLineups };
+export { scorecard };

@@ -106,8 +106,12 @@ class TopNavbar extends Component {
                                 </div> 
                             }
                             {!isEmpty(this.props.currentUser) &&
-                                <div style={{width:'100%'}}>
-                                    <div onClick={this.toggle} id="PopoverMenu">{this.props.currentUser.first_name}</div>
+                                <div>
+                                    <div onClick={this.toggle} 
+                                        id="PopoverMenu"
+                                        className="nav-item">
+                                        {this.props.currentUser.first_name}
+                                    </div>
                                     <Popover 
                                         placement="left-start" 
                                         isOpen={this.state.isOpen} 

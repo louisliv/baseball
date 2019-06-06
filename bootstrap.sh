@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 # wget https://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm
-wget https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/pgdg-centos96-9.6-3.noarch.rpm
+# wget https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/pgdg-centos96-9.6-3.noarch.rpm
 # rpm -ivh mysql57-community-release-el7-9.noarch.rpm
-yum -y install pgdg-centos96-9.6-3.noarch.rpm epel-release
+# yum -y install pgdg-centos96-9.6-3.noarch.rpm epel-release
 # yum -y install mysql-server
+yum -y install https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-ppc64le/pgdg-centos96-9.6-3.noarch.rpm
 yum -y update
 yum -y check-update
 yum -y install epel-release

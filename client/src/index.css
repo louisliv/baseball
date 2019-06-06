@@ -40,3 +40,7 @@ code {
 .strikethrough {
   text-decoration: line-through
 }
+
+.hidden {
+  display: none;
+}

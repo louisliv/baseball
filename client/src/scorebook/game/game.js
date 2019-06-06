@@ -26,6 +26,7 @@ class Game extends Component {
         super(props);
         this.startScorecard = this.startScorecard.bind(this);
         this.startSetLineups = this.startSetLineups.bind(this);
+        this.routeToScorecard = this.routeToScorecard.bind(this);
     }
 
     componentWillMount() {
@@ -58,13 +59,19 @@ class Game extends Component {
 
     startSetLineups() {
         let date = Constants.storeDateFormatter(this.props.game.gameDate);
-        console.log(date);
         router.stateService.go('scorebook.set-lineups', {
             gameId: this.props.$stateParams.gameId,
             scorecardId: this.props.scorecard.id,
             awayTeamId: this.props.game.teams.away.team.id,
             homeTeamId: this.props.game.teams.home.team.id,
             date: Constants.storeDateFormatter(this.props.game.gameDate)
+        })
+    }
+
+    routeToScorecard() {
+        console.log(this.props);
+        router.stateService.go('scorecard', {
+            scorecardId: this.props.scorecard.id
         })
     }
 
@@ -100,6 +107,12 @@ class Game extends Component {
                                 </Row>
                                 {!isEmpty(this.props.scorecard) && this.props.scorecard.data.startersSet &&
                                     <Row>
+                                        <Col xs="12" className="text-center">
+                                            <Button onClick={this.routeToScorecard}
+                                                color="success">
+                                                Go to Scorecard
+                                            </Button>
+                                        </Col>
                                         <Col xs="6">
                                             <Card>
                                                 <CardBody>

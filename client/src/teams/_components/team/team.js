@@ -30,7 +30,7 @@ class Team extends Component {
 
     render() {
         return (
-            <Card onClick={this.routeToNext}>
+            <Card onClick={this.routeToNext} className="hoverable">
                 <CardImg top 
                     src={Constants.getTeamLogo(this.props.team.id)}
                     style={{backgroundColor: this.brand.primary}}/>
