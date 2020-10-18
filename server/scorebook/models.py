@@ -10,6 +10,6 @@ from django.contrib.postgres.fields import JSONField
 
 class Scorecard(models.Model):
     game_id = models.IntegerField(editable=False)
-    user = models.ForeignKey(User, related_name='scorecards', editable=False)
+    user = models.ForeignKey(User, related_name='scorecards', editable=False, on_delete=models.CASCADE)
     complete = models.BooleanField(default=False)
     data = JSONField()

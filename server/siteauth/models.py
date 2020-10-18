@@ -8,7 +8,7 @@ from django.contrib.postgres.fields import ArrayField
 # Create your models here.
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, related_name="profile")
+    user = models.OneToOneField(User, related_name="profile", on_delete=models.CASCADE)
     avatar = models.ImageField(blank=True, null=True)
     teams = ArrayField(models.IntegerField(blank=True), 
         default=list)

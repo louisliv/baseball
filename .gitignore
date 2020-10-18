@@ -16,3 +16,5 @@ client/static/css/styles.css
 .vscode
 server/pip-selfcheck.json
 *.retry
+envs
+data

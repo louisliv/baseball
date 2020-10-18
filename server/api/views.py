@@ -24,7 +24,7 @@ class AuthViewSet(viewsets.ViewSet):
 
 	@list_route(methods=['get'])
 	def is_authenticated(self, request):
-		return Response(request.user.is_authenticated())
+		return Response(request.user.is_authenticated)
 
 	@list_route(methods=['post'])
 	def login(self, request):

@@ -1,0 +1,156 @@
+# This is an Anaconda project file.
+#
+# Here you can describe your project and how to run it.
+# Use `anaconda-project run` to run the project.
+# The file is in YAML format, please see http://www.yaml.org/start.html for more.
+#
+
+name: baseball
+
+variables:
+  PG_DATA:
+    default: data/pg
+    description: The location of the postgres database
+  PG_PORT:
+    default: 5432
+    description: The port for the postgres database
+  DATA_DIR:
+    default: data
+
+commands:
+  db:
+    unix: postgres -p $PG_PORT -D $PG_DATA
+    windows: postgres -p %PG_PORT% -D %PG_DATA%
+    env_spec: _server
+
+  db:start:
+    unix: pg_ctl -o "-p $PG_PORT" start -D $PG_DATA
+    windows: pg_ctl -o "-p %PG_PORT%" start -D %PG_DATA%
+    env_spec: _server
+
+  db:stop:
+    unix: pg_ctl stop -D $PG_DATA
+    windows: pg_ctl stop -D %PG_DATA%
+    env_spec: _server
+
+  db:init:
+    unix: >
+      rm -rf $PG_DATA &&
+      initdb -D $PG_DATA
+    windows: >
+      @ECHO ON &&
+      (if exist %CD%\%DATA_DIR% rmdir /s /q %CD%\%DATA_DIR%) &
+      initdb -D %PG_DATA%
+    env_spec: _server
+
+  db:setup:
+    unix: >
+      createdb -p $PG_PORT baseball &&
+      psql -p $PG_PORT -d baseball -f sql/00_create_databases.sql
+    windows: >
+      @ECHO ON &&
+      createdb -p %PG_PORT% baseball &&
+      psql -p %PG_PORT% -d baseball -f sql\00_create_databases.sql
+    env_spec: _server
+
+  db:grant:
+    unix: psql -p $PG_PORT -d baseball -f sql/01_grant_user_perms.sql
+    windows: >
+      @ECHO ON &&
+      psql -p %PG_PORT% -d baseball -f sql\01_grant_user_perms.sql
+    env_spec: _server
+
+  check:migrations:
+    unix: cd server && python manage.py makemigrations --dry-run --check
+    windows: cd server && python manage.py makemigrations --dry-run --check
+    env_spec: _server
+
+  server:
+    unix: >
+      cd server &&
+      python manage.py runserver
+    windows: >
+      cd server &&
+      python manage.py runserver
+    env_spec: _server
+
+  manage:
+    unix: cd server && python manage.py
+    windows: cd server && python manage.py
+    env_spec: _server
+
+  watson:
+    unix: >
+      cd server &&  python manage.py installwatson &&
+      python manage.py buildwatson
+    windows: >
+      cd server &&  python manage.py installwatson &&
+      python manage.py buildwatson
+    env_spec: _server
+
+  populateteams:
+    unix: >
+      cd server &&  python manage.py populate_teams 2020
+    windows: >
+      cd server &&  python manage.py populate_teams 2020
+    env_spec: _server
+
+  ui:setup:
+    unix: cd client && npm install
+    windows: cd client && npm install
+    env_spec: _ui
+
+  ui:
+    unix: cd client && npm start
+    windows: cd client && npm start
+    env_spec: _ui
+
+channels:
+- https://conda.anaconda.org/anaconda
+- https://conda.anaconda.org/conda-forge
+
+env_specs:
+  _deploy_tools:
+    packages:
+    - anaconda-project
+    - git
+    platforms:
+    - linux-64
+    - win-64
+    - osx-64
+
+  _default:
+    packages:
+    - python
+    - pip
+    - conda
+    - pillow
+    platforms:
+    - linux-64
+    - win-64
+    - osx-64
+
+  _server:
+    inherit_from:
+    - _default
+    packages:
+    - postgresql
+    - psycopg2
+    - django >= 3.0
+    - jsonfield
+    - django-cors-headers
+    - djangorestframework
+    platforms:
+    - linux-64
+    - win-64
+    - osx-64
+
+  _ui:
+    inherit_from:
+    - _default
+    packages:
+    - nodejs
+    platforms:
+    - linux-64
+    - win-64
+    - osx-64

@@ -116,7 +116,7 @@ class AuthViewSet(viewsets.ViewSet):
 
     @action(methods=['get'], detail=False)
     def is_authenticated(self, request):
-        return Response(request.user.is_authenticated())
+        return Response(request.user.is_authenticated)
 
     @action(methods=['post'], detail=False)
     def login(self, request):

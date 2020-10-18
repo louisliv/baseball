@@ -21,7 +21,7 @@ class Division(models.Model):
     division_id = models.IntegerField(primary_key=True, editable=False)
     name = models.CharField(max_length=45, blank=True, null=True)
     abbreviation = models.CharField(max_length=3, blank=True, null=True)
-    league = models.ForeignKey(League, related_name='divisions')
+    league = models.ForeignKey(League, related_name='divisions', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -38,7 +38,7 @@ class Team(models.Model):
     base_url = models.CharField(max_length=100)
     bis_team_code = models.CharField(max_length=100)
     city = models.CharField(max_length=100)
-    division = models.ForeignKey(Division, related_name='teams')
+    division = models.ForeignKey(Division, related_name='teams', on_delete=models.CASCADE)
     franchise_code = models.CharField(max_length=10)
     mlb_org = models.CharField(max_length=100)
     mlb_org_id = models.IntegerField(editable=False)
@@ -71,7 +71,7 @@ class Player(models.Model):
         return '%s %s' % (self.name_use, self.name_last)
 
 class Team40ManRoster(models.Model):
-    team = models.ForeignKey(Team, related_name='rosters')
+    team = models.ForeignKey(Team, related_name='rosters', on_delete=models.CASCADE)
     players = models.ManyToManyField(Player)
 
     def __str__(self):
@@ -79,7 +79,7 @@ class Team40ManRoster(models.Model):
 
 class PlayerStats(models.Model):
     year = models.IntegerField()
-    player = models.ForeignKey(Player, related_name='stats')
+    player = models.ForeignKey(Player, related_name='stats', on_delete=models.CASCADE)
     pitching_stats = JSONField()
     hitting_stats = JSONField()
     fielding_stats = JSONField()

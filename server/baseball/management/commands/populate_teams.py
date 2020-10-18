@@ -1,6 +1,5 @@
 from django.core.management.base import BaseCommand
 import numpy as np
-import pandas as pd
 from django.conf import settings
 from baseball.models import Team, League, Division
 import sys

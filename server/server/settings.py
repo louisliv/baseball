@@ -41,8 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
     'corsheaders',
     'rest_framework',
-    'django_filters',
-    'watson',
+    'rest_framework.authtoken',
     'api',
     'siteauth',
     'baseball',
@@ -70,11 +69,13 @@ CORS_ALLOW_METHODS = (
 )
 
 CORS_ORIGIN_WHITELIST = (
-    'localhost:3000',
+    'http://localhost:4567',
+    'http://localhost:3000',
 )
 
 CSRF_TRUSTED_ORIGINS = (
-    'localhost:3000',
+    'http://localhost:4567',
+    'http://localhost:3000',
 )
 
 CORS_ALLOW_CREDENTIALS = True
@@ -114,9 +115,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'baseball',
-        'USER': 'vagrant',
-        'PASSWORD': 'vagrant',
-        'HOST': 'localhost.localdomain',
+        'USER': 'baseball_user',
+        'PASSWORD': 'baseball_user',
+        'HOST': '127.0.0.1',
         'PORT': '5432',
     }
 }
@@ -175,12 +176,9 @@ STATICFILES_DIRS = []
 MEDIAFILES_DIRS = []
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
+    'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
-    ),
-    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 100
+        'rest_framework.authentication.TokenAuthentication',
+    ],
 }
-
