@@ -69,8 +69,7 @@ class Game extends Component {
     }
 
     routeToScorecard() {
-        console.log(this.props);
-        router.stateService.go('scorecard', {
+        router.stateService.go('scorebook.scorecard', {
             scorecardId: this.props.scorecard.id
         })
     }

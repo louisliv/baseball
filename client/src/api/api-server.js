@@ -80,7 +80,7 @@ class ApiModel {
             withCredentials: true,
             credentials: 'same-origin',
             crossdomain: true,
-            uri: this._baseUrl + id + this.options.trailingChar,
+            url: this._baseUrl + id + this.options.trailingChar,
             headers: this.options.headers,
             xsrfCookieName: this.options.xsrfCookieName ? this.options.xsrfCookieName : 'XSRF-TOKEN', 
             xsrfHeaderName: this.options.xsrfHeaderName ? this.options.xsrfHeaderName : 'X-XSRF-TOKEN',

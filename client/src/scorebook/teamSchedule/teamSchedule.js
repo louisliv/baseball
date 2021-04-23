@@ -27,7 +27,7 @@ class TeamSchedule extends Component {
 
     componentWillMount() {
         TeamActions.get(this.props.$stateParams.teamId);
-        ScheduleActions.getByTeam(this.props.$stateParams.teamId, 2019);
+        ScheduleActions.getByTeam(this.props.$stateParams.teamId, new Date().getFullYear());
     }
 
     backgroundSetter(game) {

@@ -98,7 +98,7 @@ class AuthViewSet(viewsets.ViewSet):
         try:
             profile = Profile.objects.get(user = request.user.id)
 
-            profile_teams = profile.get_teams()
+            profile_teams = profile.teams
 
             data = request.data
             team_id = data.get('teamId', None)
@@ -106,7 +106,7 @@ class AuthViewSet(viewsets.ViewSet):
             if team_id:
                 profile_teams.append(team_id)
 
-            profile.set_teams(profile_teams)
+            profile.teams = profile_teams
             profile.save()
             profile.refresh_from_db()
 

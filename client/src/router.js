@@ -7,7 +7,7 @@ import {
     teamSchedule, 
     game,
     setLineups,
-    // scorecard
+    scorecard
 } from 'scorebook';
 import { auth, login } from 'auth';
 import dashboardState from 'dashboard';
@@ -64,7 +64,7 @@ const routes = [
     teamSchedule,
     game,
     setLineups,
-    // scorecard,
+    scorecard,
     auth,
     login
 ]

@@ -11,7 +11,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, related_name="profile", on_delete=models.CASCADE)
     avatar = models.ImageField(blank=True, null=True)
     teams = ArrayField(models.IntegerField(blank=True), 
-        default=list)
+        default=list, blank=True, null=True)
 
     def __str__(self):
         return '%s %s' % (self.user.first_name, self.user.last_name)
