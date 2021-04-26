@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import AtBat from "./atBat";
 
 class Inning {
     constructor(inningNum) {

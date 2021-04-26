@@ -30,12 +30,16 @@ body {
     font-family: 'Titillium Web', sans-serif;
 }
 
-.nav-item {
+.main-navbar .nav-item {
     color: white;
+}
 
-    &:hover {
-        cursor: pointer;
-    }
+.side-bar .nav-item {
+    color: white;
+}
+
+.nav-item:hover {
+    cursor: pointer;
 }
 
 .hoverable {

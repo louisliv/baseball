@@ -74,8 +74,8 @@ class TeamSchedule extends Component {
             _.forEach(date.games, (game) => {
                 let homeGame = game.teams.home.team.id === this.props.team.id;
                 let title = homeGame ?
-                    'vs' + ' ' + game.teams.away.team.name: 
-                    '@' + ' ' + game.teams.home.team.name;
+                    `vs ${game.teams.away.team.name}`: 
+                    `@ ${game.teams.home.team.name}`;
                 let event = {
                     start: new Date(game.gameDate),
                     end: new Date(game.gameDate),

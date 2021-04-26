@@ -22,8 +22,6 @@ class Scorecard {
         this.homeTeamLineupSpot = 1;
         this.awayTeamLineupSpot = 1;
 
-        var currentPlayer = this.getCurrentPlayer(0,1)
-
         this.plays = {
             awayTeam: this.initInnings(),
             homeTeam: this.initInnings(),
@@ -101,10 +99,11 @@ class Scorecard {
     }
 
     goToNextHalfInning() {
-        if (this.currentTeam == 0) {
+        var currentPlayer;
+        if (this.currentTeam === 0) {
             this.currentTeam = 1;
             this.incrementLineupSpot(this.homeTeamLineupSpot);
-            var currentPlayer = 
+            currentPlayer = 
                 this.getCurrentPlayer(this.currentTeam, this.homeTeamLineupSpot)
             this.plays.homeTeam[this.currentInning] = 
                 new Inning(this.currentInning, currentPlayer);
@@ -117,7 +116,7 @@ class Scorecard {
             }
 
             this.incrementLineupSpot(this.awayTeamLineupSpot);
-            var currentPlayer = 
+            currentPlayer = 
                 this.getCurrentPlayer(this.currentTeam, this.awayTeamLineupSpot)
             this.plays.awayTeam[this.currentInning] = 
                 new Inning(this.currentInning, currentPlayer);
@@ -125,7 +124,7 @@ class Scorecard {
     }
 
     incrementLineupSpot(teamLineupSpot) {
-        if (teamLineupSpot == 9) {
+        if (teamLineupSpot === 9) {
             teamLineupSpot = 1;
         } else {
             teamLineupSpot++;
@@ -145,6 +144,8 @@ class Scorecard {
                 break;
             case 1:
                 this.plays.homeTeamRuns++;
+                break;
+            default:
                 break;
         }
     }

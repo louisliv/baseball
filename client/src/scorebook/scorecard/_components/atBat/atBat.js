@@ -1,4 +1,4 @@
-import React, { useState, setValue } from 'react';
+import React from 'react';
 
 import { AtBat as AtBatModel } from "../../models";
 
@@ -24,22 +24,18 @@ const AtBat = (props) => {
       inning
     } = props;
 
-    
     const atBat = new AtBatModel(props.playerId, props.lineupSpot, props.team);
-
-    const handleChange = e => {
-        console.log(e.target)
-        setValue(e.target.name, e.target.value)
-    }
   
     return (
         <Modal isOpen={isOpened} toggle={handleCancel}>
             <ModalBody>
                 <Row>
-                    <Col xs="6">
+                    <Col xs="12">
                         <div className="test-center">
                             <h2>{player.person.fullName}</h2>
                         </div>
+                    </Col>
+                    <Col xs="6">
                         <div>Inning {inning}</div>
                         <img 
                             src={Constants.getPlayerHeadshotUrl(atBat.playerId)} 

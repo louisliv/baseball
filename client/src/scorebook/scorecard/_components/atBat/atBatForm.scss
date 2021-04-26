@@ -1,0 +1,11 @@
+.pitch-result::-webkit-outer-spin-button,
+.pitch-result::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.pitch-result {
+  -moz-appearance: textfield;
+  text-align: center;
+}

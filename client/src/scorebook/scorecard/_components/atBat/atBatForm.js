@@ -73,7 +73,7 @@ class AtBatForm extends Component {
     render() {
         return (
             <Form onSubmit={(event) =>{this.props.handleSubmit(event, this.props.inning, this.state.atBat)}}>
-                <FormGroup row>
+                <FormGroup>
                     <Label>Balls</Label>
                     <InputGroup>
                         <InputGroupAddon addonType="prepend">
@@ -86,7 +86,8 @@ class AtBatForm extends Component {
                             max={4}
                             name="balls"
                             value={this.state.atBat.balls}
-                            onChange={this.handleChange}/>
+                            onChange={this.handleChange}
+                            className="pitch-result"/>
                         <InputGroupAddon addonType="append">
                             <Button onClick={(e) => this.handleNumberButton(e, "balls", "plus")}>
                                 <FontAwesomeIcon icon={faPlus}/>
@@ -94,7 +95,7 @@ class AtBatForm extends Component {
                         </InputGroupAddon>
                     </InputGroup>
                 </FormGroup>
-                <FormGroup row>
+                <FormGroup>
                     <Label>Strikes</Label>
                     <InputGroup>
                         <InputGroupAddon addonType="prepend">
@@ -107,7 +108,8 @@ class AtBatForm extends Component {
                             max={3}
                             name="strikes"
                             value={this.state.atBat.strikes}
-                            onChange={this.handleChange}/>
+                            onChange={this.handleChange}
+                            className="pitch-result"/>
                         <InputGroupAddon addonType="append">
                             <Button type="plus" onClick={(e) => this.handleNumberButton(e, "strikes", "plus")}>
                                 <FontAwesomeIcon icon={faPlus}/>

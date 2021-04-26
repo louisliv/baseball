@@ -10,14 +10,17 @@ import AtBat, {AtBatDisplay} from "./_components/atBat";
 import ScorecardActions from 'store/action-creators/scorecards';
 import ScorecardSelectors from 'store/selectors/scorecards';
 import {Scorecard as ScorecardModel} from './models';
+import classnames from 'classnames';
 
 import { 
     Row, 
     Col,
-    Button,
     Card,
     CardBody,
-    Table
+    Table,
+    Nav,
+    NavItem,
+    NavLink
 } from 'reactstrap'
 
 class Scorecard extends Component {
@@ -76,15 +79,24 @@ class Scorecard extends Component {
         var awayTeam = this.props.scorecard.data.awayTeam.team;
         if (!_.isEmpty(this.state.scorecard)) {
             return (
+                
                 <div className="text-center">
-                    <Button color="link" 
-                        onClick={(event) => {this.changeLineUp(event, 0)}}>
-                        {awayTeam.name} ({this.state.scorecard.plays.awayTeamRuns})
-                    </Button> 
-                    <Button color="link" 
-                        onClick={(event) => {this.changeLineUp(event, 1)}}>
-                        {homeTeam.name} ({this.state.scorecard.plays.homeTeamRuns})
-                    </Button>
+                    <Nav tabs>
+                        <NavItem>
+                            <NavLink
+                                className={classnames({ active: this.state.scorecard.currentTeam === 0 })}
+                                onClick={(event) => {this.changeLineUp(event, 0)}}>
+                                {awayTeam.name} ({this.state.scorecard.plays.awayTeamRuns})
+                            </NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <NavLink
+                                className={classnames({ active: this.state.scorecard.currentTeam === 1 })}
+                                onClick={(event) => {this.changeLineUp(event, 1)}}>
+                                {homeTeam.name} ({this.state.scorecard.plays.homeTeamRuns})
+                            </NavLink>
+                        </NavItem>
+                    </Nav>
                 </div>
             )
         } else {
@@ -145,12 +157,14 @@ class Scorecard extends Component {
         var rows = []
         
         if (this.state.scorecard) {
-            switch (this.state.scorecard.currentLineup) {
+            switch (this.state.scorecard.currentTeam) {
                 case 0:
                     currentLineup = awayTeamLineup;
                     break;
                 case 1:
                     currentLineup = homeTeamLineUp;
+                    break;
+                default:
                     break;
             }
             _.forEach(currentLineup, (player, key) => {
@@ -171,7 +185,7 @@ class Scorecard extends Component {
         
         var scorecardFromState = this.state.scorecard;
 
-        scorecardFromState.currentLineup = lineup;
+        scorecardFromState.currentTeam = lineup;
 
         this.setState({
             scorecard: scorecardFromState

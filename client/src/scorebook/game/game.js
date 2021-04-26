@@ -58,7 +58,6 @@ class Game extends Component {
     }
 
     startSetLineups() {
-        let date = Constants.storeDateFormatter(this.props.game.gameDate);
         router.stateService.go('scorebook.set-lineups', {
             gameId: this.props.$stateParams.gameId,
             scorecardId: this.props.scorecard.id,
