@@ -31,7 +31,7 @@ const AtBat = (props) => {
             <ModalBody>
                 <Row>
                     <Col xs="12">
-                        <div className="test-center">
+                        <div className="text-center">
                             <h2>{player.person.fullName}</h2>
                         </div>
                     </Col>
@@ -40,7 +40,7 @@ const AtBat = (props) => {
                         <img 
                             src={Constants.getPlayerHeadshotUrl(atBat.playerId)} 
                             alt={atBat.playerId}
-                            className="test-center"/>
+                            className="text-center"/>
                     </Col>
                     <Col xs="6">
                         <AtBatForm atBat={atBat} 

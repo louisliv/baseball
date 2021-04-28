@@ -1,0 +1,33 @@
+.scorebox {
+    position: fixed;
+    top: 66px;
+    right: 10px;
+    cursor: move;
+
+    .card {
+        border-radius: 0;
+    }
+
+    .run-display {
+        margin-right: 5px;
+    }
+
+    table thead td {
+        border-top: 0;
+    }
+
+    table td {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .increment-icon {
+        cursor: pointer;
+    }
+
+    .close-icon {
+        cursor: pointer;
+        color: #dc3545;
+        margin-left: 5px;
+    }
+}

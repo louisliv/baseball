@@ -6,9 +6,7 @@ class Scorecard {
     constructor(data) {
         this.plays = {
             awayTeam: {},
-            homeTeam: {},
-            awayTeamRuns: 0,
-            homeTeamRuns: 0
+            homeTeam: {}
         };
 
         if (data.started) {
@@ -31,6 +29,9 @@ class Scorecard {
 
         this.plays.awayTeam = this.initInnings();
         this.plays.homeTeam = this.initInnings();
+
+        this.plays.awayTeamRuns = 0;
+        this.plays.homeTeamRuns = 0;
 
         this.started = true;
     }
@@ -56,6 +57,9 @@ class Scorecard {
         this.homeTeamLineupSpot = data.homeTeamLineupSpot;
         this.awayTeamLineupSpot = data.awayTeamLineupSpot;
         this.started = data.started;
+
+        this.plays.awayTeamRuns = data.plays.awayTeamRuns;
+        this.plays.homeTeamRuns = data.plays.homeTeamRuns;
 
         _.forEach(TeamEnum, (team, teamKey) => {
             _.forEach(data.plays[team], (inningData) => {
@@ -157,6 +161,25 @@ class Scorecard {
                 break;
             default:
                 break;
+        }
+    }
+
+    removeRun(team) {
+        var runRef;
+
+        switch (team) {
+            case 0:
+                runRef = 'awayTeamRuns';
+                break;
+            case 1:
+                runRef = 'homeTeamRuns';
+                break;
+            default:
+                break;
+        }
+
+        if (this.plays[runRef] > 0) {
+            this.plays[runRef]--;
         }
     }
 

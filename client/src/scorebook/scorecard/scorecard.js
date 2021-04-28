@@ -28,6 +28,8 @@ import {Scorecard as ScorecardModel} from './models';
 
 import { BottomMenu, BottomMenuItem } from "utils/bottom-menu";
 
+import Scorebox from "utils/scorebox";
+
 class Scorecard extends Component {
     constructor(props) {
         super(props);
@@ -35,12 +37,16 @@ class Scorecard extends Component {
         this.changeLineUp = this.changeLineUp.bind(this);
         this.handleModalCancel = this.handleModalCancel.bind(this);
         this.handleModalSubmit = this.handleModalSubmit.bind(this);
+        this.closeScorebox = this.closeScorebox.bind(this);
+        this.openScorebox = this.openScorebox.bind(this);
         this.updateScorecard = this.updateScorecard.bind(this);
+        this.updateScore = this.updateScore.bind(this);
         this.completeScorecard = this.completeScorecard.bind(this);
 
         this.state = {
             modal: [],
             modalIsOpened: false,
+            scoreboxIsOpen: true,
             selectedLineupSpot: 0,
             selectedInning: 0
         }
@@ -59,6 +65,20 @@ class Scorecard extends Component {
         scorecard.data = scorecardData;
 
         ScorecardActions.update(scorecard.id, scorecard);
+    }
+
+    updateScore(team, up) {
+        var scorecard = this.state.scorecard;
+
+        if (up) {
+            scorecard.addRun(team);
+        } else {
+            scorecard.removeRun(team);
+        }
+
+        this.setState({
+            scorecard: scorecard
+        })
     }
 
     completeScorecard(e) {
@@ -96,6 +116,18 @@ class Scorecard extends Component {
     closeModal() {
         this.setState({
             modalIsOpened: false,
+        })
+    }
+
+    closeScorebox() {
+        this.setState({
+            scoreboxIsOpen: false,
+        })
+    }
+
+    openScorebox() {
+        this.setState({
+            scoreboxIsOpen: true,
         })
     }
 
@@ -188,6 +220,15 @@ class Scorecard extends Component {
         }
     }
 
+    loadScorebox() {
+        return (
+            <Scorebox scorecard={this.state.scorecard}
+                isOpened={this.state.scoreboxIsOpen}
+                handleCancel={this.closeScorebox}
+                updateScore={this.updateScore}/>
+        )
+    }
+
     loadLineUp() {
         var homeTeamLineUp = this.props.scorecard.data.lineups.homeTeam;
         var awayTeamLineup = this.props.scorecard.data.lineups.awayTeam;
@@ -265,6 +306,7 @@ class Scorecard extends Component {
                         </Card>
                     </Col>
                     {this.loadModal()}
+                    {this.loadScorebox()}
                     <BottomMenu>
                         <BottomMenuItem color="success"
                             textColor="white"
@@ -275,6 +317,11 @@ class Scorecard extends Component {
                             textColor="white"
                             onClick={this.completeScorecard}>
                             Complete
+                        </BottomMenuItem>
+                        <BottomMenuItem color="secondary"
+                            textColor="white"
+                            onClick={this.openScorebox}>
+                            Open Scorebox
                         </BottomMenuItem>
                     </BottomMenu>
                 </Row>

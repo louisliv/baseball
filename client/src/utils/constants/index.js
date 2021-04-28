@@ -424,8 +424,14 @@ class Constants {
         return playerUrl
     }
 
-    getTeamLogo(teamId) {
-        let baseUrl = 'https://www.mlbstatic.com/team-logos/team-cap-on-dark/'
+    getTeamLogo(teamId, light) {
+        let baseUrl;
+
+        if (light) {
+            baseUrl = 'https://www.mlbstatic.com/team-logos/team-cap-on-light/'
+        } else {
+            baseUrl = 'https://www.mlbstatic.com/team-logos/team-cap-on-dark/';
+        }
 
         return baseUrl + teamId + '.svg';
     }
