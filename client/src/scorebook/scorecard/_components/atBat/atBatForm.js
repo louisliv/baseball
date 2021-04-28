@@ -31,15 +31,12 @@ class AtBatForm extends Component {
     }
 
     handleChange(e) {
-        console.log(e)
         var atBat = this.state.atBat;
 
         if (e.target) {
             atBat[e.target.name] = e.target.value;
         } else {
-            console.log("here")
             atBat["outcome"] = e.value;
-            console.log(atBat);
         }
 
         this.setState({

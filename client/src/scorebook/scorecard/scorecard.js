@@ -4,13 +4,10 @@ import React, { Component } from 'react';
 import Column from "./_components/column";
 
 import { connect } from 'react-redux';
-
-import AtBat, {AtBatDisplay} from "./_components/atBat";
-
-import ScorecardActions from 'store/action-creators/scorecards';
-import ScorecardSelectors from 'store/selectors/scorecards';
-import {Scorecard as ScorecardModel} from './models';
 import classnames from 'classnames';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCheck } from '@fortawesome/free-solid-svg-icons'
 
 import { 
     Row, 
@@ -23,6 +20,14 @@ import {
     NavLink
 } from 'reactstrap'
 
+import AtBat, {AtBatDisplay} from "./_components/atBat";
+
+import ScorecardActions from 'store/action-creators/scorecards';
+import ScorecardSelectors from 'store/selectors/scorecards';
+import {Scorecard as ScorecardModel} from './models';
+
+import { BottomMenu, BottomMenuItem } from "utils/bottom-menu";
+
 class Scorecard extends Component {
     constructor(props) {
         super(props);
@@ -30,6 +35,9 @@ class Scorecard extends Component {
         this.changeLineUp = this.changeLineUp.bind(this);
         this.handleModalCancel = this.handleModalCancel.bind(this);
         this.handleModalSubmit = this.handleModalSubmit.bind(this);
+        this.updateScorecard = this.updateScorecard.bind(this);
+        this.completeScorecard = this.completeScorecard.bind(this);
+
         this.state = {
             modal: [],
             modalIsOpened: false,
@@ -42,6 +50,24 @@ class Scorecard extends Component {
         ScorecardActions.get(this.props.$stateParams.scorecardId);
     }
 
+    updateScorecard(e) {
+        e.preventDefault();
+
+        var scorecard = this.props.scorecard;
+        var scorecardData = this.state.scorecard;
+
+        scorecard.data = scorecardData;
+
+        ScorecardActions.update(scorecard.id, scorecard);
+    }
+
+    completeScorecard(e) {
+        e.preventDefault();
+        this.props.scorecard.complete = true;
+
+        this.updateScorecard(e)
+    }
+
     onScoreboxClicked(event, lineupSpot, inning) {
         this.setState({
             modalIsOpened: true,
@@ -52,7 +78,6 @@ class Scorecard extends Component {
 
     handleModalSubmit(event, inning, atBat) {
         event.preventDefault();
-        console.log(atBat);
         this.closeModal()
 
         var scorecard = this.state.scorecard;
@@ -77,30 +102,44 @@ class Scorecard extends Component {
     loadButtonRow() {
         var homeTeam = this.props.scorecard.data.homeTeam.team;
         var awayTeam = this.props.scorecard.data.awayTeam.team;
+
         if (!_.isEmpty(this.state.scorecard)) {
+            var completeIcon;
+
+            if (this.props.scorecard.complete) {
+                completeIcon = (
+                    <span className="text-green grey-bottom-border">
+                        <FontAwesomeIcon icon={faCheck}/> Complete
+                    </span>
+                )
+            }
+
             return (
-                
-                <div className="text-center">
-                    <Nav tabs>
-                        <NavItem>
-                            <NavLink
-                                className={classnames({ active: this.state.scorecard.currentTeam === 0 })}
-                                onClick={(event) => {this.changeLineUp(event, 0)}}>
-                                {awayTeam.name} ({this.state.scorecard.plays.awayTeamRuns})
-                            </NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink
-                                className={classnames({ active: this.state.scorecard.currentTeam === 1 })}
-                                onClick={(event) => {this.changeLineUp(event, 1)}}>
-                                {homeTeam.name} ({this.state.scorecard.plays.homeTeamRuns})
-                            </NavLink>
-                        </NavItem>
-                    </Nav>
+                <div className="d-flex">
+                    <div className="flex-fill">
+                        <Nav tabs>
+                            <NavItem>
+                                <NavLink
+                                    className={classnames({ active: this.state.scorecard.currentTeam === 0 })}
+                                    onClick={(event) => {this.changeLineUp(event, 0)}}>
+                                    {awayTeam.name} ({this.state.scorecard.plays.awayTeamRuns})
+                                </NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink
+                                    className={classnames({ active: this.state.scorecard.currentTeam === 1 })}
+                                    onClick={(event) => {this.changeLineUp(event, 1)}}>
+                                    {homeTeam.name} ({this.state.scorecard.plays.homeTeamRuns})
+                                </NavLink>
+                            </NavItem>
+                        </Nav>
+                    </div>
+                    {completeIcon}
                 </div>
+                
             )
         } else {
-            return (<div></div>)
+            return null;
         }
     }
 
@@ -226,6 +265,18 @@ class Scorecard extends Component {
                         </Card>
                     </Col>
                     {this.loadModal()}
+                    <BottomMenu>
+                        <BottomMenuItem color="success"
+                            textColor="white"
+                            onClick={this.updateScorecard}>
+                            Save
+                        </BottomMenuItem>
+                        <BottomMenuItem color="primary"
+                            textColor="white"
+                            onClick={this.completeScorecard}>
+                            Complete
+                        </BottomMenuItem>
+                    </BottomMenu>
                 </Row>
             );
         } else {

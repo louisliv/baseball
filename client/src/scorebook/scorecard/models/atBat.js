@@ -1,11 +1,21 @@
 class AtBat {
-    constructor(playerId, lineupSpot, team) {
+    constructor(playerId, lineupSpot, team, data) {
         this.playerId = playerId;
         this.lineupSpot = lineupSpot;
         this.team = team;
         this.strikes = 0;
         this.balls = 0;
-        this.result = '';
+        this.outcome = '';
+
+        if (data) {
+            this.reInit(data)
+        }
+    }
+
+    reInit(data) {
+        this.strikes = data.strikes;
+        this.balls = data.balls;
+        this.outcome = data.outcome;
     }
 
     toJson() {
@@ -14,7 +24,7 @@ class AtBat {
             lineupSpot: this.lineupSpot,
             strikes: this.strikes,
             balls: this.balls,
-            result: this.result
+            result: this.outcome
         }
     }
 
@@ -42,8 +52,8 @@ class AtBat {
         }
     }
 
-    addResult(result) {
-        this.result = result;
+    addOutcome(result) {
+        this.outcome = result;
     }
 }
 

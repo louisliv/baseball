@@ -4,6 +4,13 @@ import TeamEnum from "./teamEnum";
 
 class Scorecard {
     constructor(data) {
+        this.plays = {
+            awayTeam: {},
+            homeTeam: {},
+            awayTeamRuns: 0,
+            homeTeamRuns: 0
+        };
+
         if (data.started) {
             this.reInit(data);
         } else {
@@ -22,12 +29,8 @@ class Scorecard {
         this.homeTeamLineupSpot = 1;
         this.awayTeamLineupSpot = 1;
 
-        this.plays = {
-            awayTeam: this.initInnings(),
-            homeTeam: this.initInnings(),
-            awayTeamRuns: 0,
-            homeTeamRuns: 0
-        };
+        this.plays.awayTeam = this.initInnings();
+        this.plays.homeTeam = this.initInnings();
 
         this.started = true;
     }
@@ -42,6 +45,7 @@ class Scorecard {
     }
 
     reInit(data) {
+        var self = this;
         this.lineups = data.lineups;
         this.homeTeam = data.homeTeam;
         this.awayTeam = data.awayTeam;
@@ -51,8 +55,14 @@ class Scorecard {
         this.currentTeam = data.currentTeam;
         this.homeTeamLineupSpot = data.homeTeamLineupSpot;
         this.awayTeamLineupSpot = data.awayTeamLineupSpot;
-        this.plays = data.plays;
         this.started = data.started;
+
+        _.forEach(TeamEnum, (team, teamKey) => {
+            _.forEach(data.plays[team], (inningData) => {
+                self.plays[team][inningData.inningNumber] = 
+                    new Inning(inningData.inningNumber, inningData, teamKey)
+            })
+        })
     }
 
     toJson() {

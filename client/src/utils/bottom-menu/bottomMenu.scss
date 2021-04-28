@@ -1,0 +1,10 @@
+.bottom-menu {
+    bottom: 0;
+    right: 0;
+    position: fixed;
+    z-index: 1001;
+
+    .nav-link.btn {
+        border-radius: 0;
+    }
+}

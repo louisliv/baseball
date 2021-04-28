@@ -11,6 +11,7 @@ var Outcomes = [
     {value: "F8", label: "F8"},
     {value: "F9", label: "F9"},
     {value: "Groundout", label: "Groundout"},
+    {value: "BB", label:"BB"},
     {value: "1B", label: "1B"},
     {value: "2B", label: "2B"},
     {value: "3B", label: "3B"},

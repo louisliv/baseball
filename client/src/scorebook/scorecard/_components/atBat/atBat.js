@@ -50,7 +50,10 @@ const AtBat = (props) => {
                 </Row>
             </ModalBody>
             <ModalFooter>
-                <Button color="primary" onClick={(event) =>{onSubmit(event, inning, atBat)}}>Submit</Button>{' '}
+                <Button color="primary" 
+                    onClick={(event) =>{onSubmit(event, inning, atBat)}}>
+                    End At Bat
+                </Button>{' '}
                 <Button color="secondary" onClick={handleCancel}>Cancel</Button>
             </ModalFooter>
         </Modal>

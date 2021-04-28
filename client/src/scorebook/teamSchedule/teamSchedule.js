@@ -90,6 +90,9 @@ class TeamSchedule extends Component {
 
         return (
             <Row className="team-schedule">
+                <Col xs="12" className="text-center">
+                    <h2>{this.props.team.name}</h2>
+                </Col>
                 <Col xs="12" style={{minHeight: '600px'}}>
                     <BigCalendar
                         localizer={localizer}

@@ -7,13 +7,9 @@ import {
     Navbar,
     NavbarBrand,
     Nav,
-    InputGroup,
-    InputGroupAddon,
-    Input,
     Button,
     Container,
     Col,
-    Form,
     Popover,
     ListGroup,
     ListGroupItem,
@@ -71,35 +67,16 @@ class TopNavbar extends Component {
     render() {
         return (
             <Navbar color="dark" dark expand="md" className="main-navbar">
-                <Container>
-                    <Col sm="3">    
+                <Container fluid>
+                    <Col sm="6">    
                         <UISref to="dashboard">
                             <NavbarBrand>Baseball</NavbarBrand>
                         </UISref>
                     </Col>
                     <Col sm="6">
-                        <Form onSubmit={this.handleSubmit}>
-                            <InputGroup>
-                                <Input 
-                                    type="text" 
-                                    placeholder="Enter Search Term"
-                                    value={this.state.value}
-                                    onChange={this.handleChange}/>
-                                <InputGroupAddon addonType="append">
-                                    <Button 
-                                        type="button"
-                                        color="primary"
-                                        onClick={this.handleSubmit}>
-                                        Search
-                                    </Button>
-                                </InputGroupAddon>
-                            </InputGroup>
-                        </Form>
-                    </Col>
-                    <Col sm="3">
-                        <Nav className="ml-auto text-right" navbar>
+                        <Nav className="ml-auto d-flex justify-content-end" navbar>
                             {isEmpty(this.props.currentUser) &&
-                                <div style={{width:'100%'}}>
+                                <div>
                                     <UISref to="auth.login">
                                         <Button color="success">Login</Button>
                                     </UISref>
