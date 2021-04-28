@@ -4,6 +4,8 @@ import moment from 'moment';
 
 class Constants {
     constructor() {
+        this.siteName = "GameScore";
+
         this.playerPositions = {
             PITCHER: "1",
             CATCHER: "2",

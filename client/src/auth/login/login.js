@@ -39,7 +39,7 @@ class ConnectedLogin extends Component {
         e.preventDefault();
         AuthActions.login(this.state.creds)
             .then(() => {
-                router.stateService.go('dashboard');
+                router.stateService.go('scorebook.teamList');
             })
     }
 

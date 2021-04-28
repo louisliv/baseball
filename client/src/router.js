@@ -30,7 +30,7 @@ router.transitionService.onBefore(true, function(trans) {
         return AuthApi.isAuthenticated()
             .then((response) => {
                 if (!response) {
-                    return trans.router.stateService.target('dashboard')
+                    return trans.router.stateService.target('scorebook.teamList')
                 }
             })
     }

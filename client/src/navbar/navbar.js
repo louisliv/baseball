@@ -19,6 +19,8 @@ import { UISref } from '@uirouter/react'
 import { router } from 'router';
 import { connect } from 'react-redux';
 
+import Constants from 'utils/constants';
+
 class TopNavbar extends Component {
     constructor(props) {
         super(props);
@@ -59,7 +61,7 @@ class TopNavbar extends Component {
             .then(() => {
                 this.toggle();
                 if (router.stateService.current.requireAuth) {
-                    router.stateService.go('dashboard')
+                    router.stateService.go('home')
                 }
             })
     }
@@ -69,8 +71,8 @@ class TopNavbar extends Component {
             <Navbar color="dark" dark expand="md" className="main-navbar">
                 <Container fluid>
                     <Col sm="6">    
-                        <UISref to="dashboard">
-                            <NavbarBrand>Baseball</NavbarBrand>
+                        <UISref to="scorebook.teamList">
+                            <NavbarBrand>{Constants.siteName}</NavbarBrand>
                         </UISref>
                     </Col>
                     <Col sm="6">

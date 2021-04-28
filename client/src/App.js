@@ -17,25 +17,12 @@ class App extends Component {
     render() {
         return (
             <Container className="main-container" fluid>
-                {this.props.currentState.data && !this.props.currentState.data.excludeSidebar ?
-                    <Row className="main-row">
-                        <Col xs="1" className="no-padding sidebar-col">
-                            <Sidebar />
-                        </Col>
-                        <Col xs="11" className="no-padding">
-                            <MainNavbar />
-                            <Container fluid>
-                                <UIView />
-                            </Container>
-                        </Col>
-                    </Row>:
-                    <Row className="main-row">
-                        <MainNavbar />
-                        <Container fluid>
-                            <UIView />
-                        </Container>
-                    </Row>
-                }
+                <Row className="main-row">
+                    <MainNavbar />
+                    <Container fluid>
+                        <UIView />
+                    </Container>
+                </Row>
             </Container>
         );
     }
