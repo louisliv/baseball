@@ -68,10 +68,10 @@ commands:
   server:
     unix: >
       cd server &&
-      python manage.py runserver
+      python manage.py runserver 0.0.0.0:8000
     windows: >
       cd server &&
-      python manage.py runserver
+      python manage.py runserver 0.0.0.0:8000
     env_spec: _server
 
   manage:
