@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import { MainNavbar } from './navbar';
-import { Sidebar } from 'sidebar/sidebar';
 import { UIView } from '@uirouter/react';
 
 import { 
     Container,
-    Col,
     Row
 } from 'reactstrap';
 
