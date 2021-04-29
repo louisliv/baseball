@@ -29,7 +29,7 @@ def check_call(cmd_args, *args, **kwargs):
 class Bootsraper(object):
     _conda_info = None
 
-    _default_stages = ['db', 'teams', 'ui']
+    _default_stages = ['db', 'teams']
 
     def __init__(self, stages=None):
         self.stages = self._default_stages
@@ -116,13 +116,6 @@ class Bootsraper(object):
             APR + ["manage"] + ["migrate"],
             APR + ["db:grant"],
         ], cleanup=[APR + ["db:stop"]])
-
-    def prepare_ui(self):
-        """
-        Install npm packages
-        """
-
-        check_call(APR + ["ui:setup"])
 
     def prepare_teams(self):
         """
