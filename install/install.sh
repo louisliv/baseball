@@ -25,7 +25,17 @@ echo -e " ${LRED}-${NC}${WHITE} Removing old files...${NC}"
 sudo rm /var/www/baseball
 sudo rm /etc/systemd/system/runserver.service
 sudo rm /etc/nginx/sites-enabled/baseball_nginx.conf
+sudo rm /etc/nginx/sites-enabled/default
 sudo rm -rf $BASEBALL/client/build
+
+############################
+##  Destroy Old Database  ##
+############################
+echo -e " ${LRED}-${NC}${WHITE} Destroying old database...${NC}"
+if command -v dropdb &> /dev/null
+then
+    sudo -u postgres dropdb -p 5432 --if-exists baseball
+fi
 
 echo -e "Progress:10"
 
@@ -68,22 +78,35 @@ sleep 1
 ################################
 ##  Install NGINX  ##
 ################################
-echo -e " ${LRED}-${NC}${WHITE} Installing NGINX...${NC}"
+echo -e " ${LRED}-${NC}${WHITE} Installing Ubuntu Packages...${NC}"
 
-sudo apt -y install nginx nodejs npm
+sudo apt -y install nginx nodejs npm postgresql postgresql-contrib
 
 echo -e "Progress:30"
 sleep 1
 
 ##########################
-## Run Boostrap         ##
+## Setup Database       ##
 ##########################
-echo -e "\n ${LRED}-${NC}${WHITE} Running Bootstrap..${NC}\n"
+echo -e "\n ${LRED}-${NC}${WHITE} Setting up the database..${NC}\n"
 cd $BASEBALL
-python3 -m scripts.bootstrap
+sudo -u createdb -p 5432 baseball
+sudo -u postgres psql -p 5432 -d baseball -f sql/00_create_databases.sql
+sudo -u postgres psql -p 5432 -d baseball -f sql/01_grant_user_perms.sql
+
+cd $BASEBALL/server
+sudo python3 -m manage migrate
+sudo python3 -m manage populate_teams 2021
 
 echo -e "Progress:50"
 sleep 1
+
+##########################
+## Setup Admin User     ##
+##########################
+echo -e "\n ${LRED}-${NC}${WHITE} Setting up the admin user ${NC}${ORANGE}*INPUT REQUIRED*..${NC}\n"
+sudo python3 -m manage createsuperuser
+
 
 ##########################
 ## Install UI             ##
@@ -114,7 +137,6 @@ cd $BASEBALL
 echo $BASEBALL
 sudo ln -s $BASEBALL /var/www
 sudo ln -s $BASEBALL/runserver.service /etc/systemd/system/
-sudo ln -s $BASEBALL/redis.service /etc/systemd/system/
 sudo ln -s $BASEBALL/baseball_nginx.conf /etc/nginx/sites-enabled/
 
 sudo systemctl daemon-reload

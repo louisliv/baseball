@@ -10,10 +10,12 @@ from rest_framework import permissions, viewsets
 from rest_framework.response import Response
 from rest_framework import status, views
 
+
 # Create your views here.
 class ScorecardViewSet(viewsets.ModelViewSet):
     serializer_class = ScorecardSerializer
     pagination_class = None
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         queryset = Scorecard.objects.filter(user=self.request.user)
