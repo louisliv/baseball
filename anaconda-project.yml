@@ -90,9 +90,9 @@ commands:
 
   populateteams:
     unix: >
-      cd server &&  python manage.py populate_teams 2020
+      cd server &&  python manage.py populate_teams 2021
     windows: >
-      cd server &&  python manage.py populate_teams 2020
+      cd server &&  python manage.py populate_teams 2021
     env_spec: _server
 
   ui:setup:
@@ -125,6 +125,7 @@ env_specs:
     - pip
     - conda
     - pillow
+    - numpy
     platforms:
     - linux-64
     - win-64

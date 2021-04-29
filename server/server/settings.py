@@ -23,10 +23,16 @@ BASEBALL_DATA_DIR = BASE_DIR + '/baseball/data/'
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '4+fc0+^)_9gnjbxh(b=71b)#y%w)n@nrcb^6po4h=--v-e4x98'
 
+DJANGO_PRODUCTION = os.environ.get('DJANGO_PRODUCTION', None)
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+if DJANGO_PRODUCTION:
+    ALLOWED_HOSTS.append('10.0.0.156')
+    ALLOWED_HOSTS.append('louis-first-build.local')
 
 
 # Application definition
