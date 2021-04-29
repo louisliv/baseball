@@ -1,0 +1,16 @@
+[Unit]
+Description=runserver daemon
+After=network.target
+
+[Service]
+User=root
+Group=www-data
+Environment=DJANGO_PRODUCTION=production
+WorkingDirectory=/var/www/baseball/server
+ExecStart=/usr/bin/python3 -m manage runserver 0.0.0.0:8000
+StandardOutput=append:/var/log/baseball.log
+StandardError=append:/var/log/baseball.error.log
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
