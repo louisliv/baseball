@@ -26,7 +26,7 @@ SECRET_KEY = '4+fc0+^)_9gnjbxh(b=71b)#y%w)n@nrcb^6po4h=--v-e4x98'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['10.0.0.156','louis-first-build.local']
 
 
 # Application definition

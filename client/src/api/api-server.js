@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import request from 'axios'
 
-const originBaseUrl = 'http://' + window.location.hostname + ':8000';
+const originBaseUrl = 'http://' + window.location.hostname;
 
 class Api {
     constructor() {
