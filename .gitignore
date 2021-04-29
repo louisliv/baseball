@@ -18,3 +18,4 @@ server/pip-selfcheck.json
 *.retry
 envs
 data
+/baseball

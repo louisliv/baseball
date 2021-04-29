@@ -1,7 +1,11 @@
 import _ from 'lodash';
 import request from 'axios'
 
-const originBaseUrl = 'http://' + window.location.hostname;
+const apiAppend = process.env.NODE_ENV === 'production' ? 
+    process.env.REACT_APP_PROD_API_APPEND : 
+    process.env.REACT_APP_DEV_API_APPEND;
+
+const originBaseUrl = 'http://' + window.location.hostname + apiAppend;
 
 class Api {
     constructor() {

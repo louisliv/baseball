@@ -48,7 +48,7 @@ class TeamList extends Component {
             _.forEach(this.props.currentUser.teams, (userTeam) => {
                 let teamObj = this.props.teams[userTeam];
                 teams.push(
-                    <Col key={teamObj.id} xs="3">
+                    <Col key={teamObj.id} xs="12" md="3">
                         <Team team={teamObj}></Team>
                     </Col>
                 )

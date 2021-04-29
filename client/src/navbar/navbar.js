@@ -89,7 +89,7 @@ class TopNavbar extends Component {
                                     <div onClick={this.toggle} 
                                         id="PopoverMenu"
                                         className="nav-item">
-                                        {this.props.currentUser.first_name}
+                                        {this.props.currentUser.username}
                                     </div>
                                     <Popover 
                                         placement="left-start" 

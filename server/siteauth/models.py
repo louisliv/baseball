@@ -14,7 +14,7 @@ class Profile(models.Model):
         default=list, blank=True, null=True)
 
     def __str__(self):
-        return '%s %s' % (self.user.first_name, self.user.last_name)
+        return self.user.username
 
 class Todo(models.Model):
     title = models.CharField(max_length=100)

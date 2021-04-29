@@ -14,7 +14,7 @@ BASEBALL=`pwd`
 
 clear
 echo -e " ${LRED}########################################${NC}"
-echo -e " ${LRED}#${NC}  ${GREEN}Installing ScoreKeeping Application${NC} ${LRED}#${NC}"
+echo -e " ${LRED}#${NC}  ${GREEN}Installing Scorekeeping App${NC} ${LRED}#${NC}"
 echo -e " ${LRED}########################################${NC}"
 echo -e "Progress:1"
 
@@ -26,6 +26,8 @@ sudo rm /var/www/baseball
 sudo rm /etc/systemd/system/runserver.service
 sudo rm /etc/nginx/sites-enabled/baseball_nginx.conf
 sudo rm /etc/nginx/sites-enabled/default
+sudo rm /var/log/baseball.error.log
+sudo rm /var/log/baseball.log
 sudo rm -rf $BASEBALL/client/build
 
 ############################
@@ -34,34 +36,12 @@ sudo rm -rf $BASEBALL/client/build
 echo -e " ${LRED}-${NC}${WHITE} Destroying old database...${NC}"
 if command -v dropdb &> /dev/null
 then
-    sudo -u postgres dropdb -p 5432 --if-exists baseball
+    sudo -u postgres psql -p 5432 -d baseball -f $BASEBALL/sql/03_delete_database_setup.sql
+    sudo -u postgres dropdb -p 5432 baseball --if-exists 
 fi
 
-echo -e "Progress:10"
+echo -e "Progress:15"
 
-#########################
-##  Install Miniconda  ##
-#########################
-echo -e " ${LRED}-${NC}${WHITE} Installing Miniconda...${NC}"
-
-mkdir -p ~/miniconda3
-wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
-bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
-rm -rf ~/miniconda3/miniconda.sh
-~/miniconda3/bin/conda init bash
-~/miniconda3/bin/conda init zsh
-sudo apt -y install python3-pip
-
-echo -e "Progress:20"
-sleep 1
-
-################################
-##  Install Anaconda-Project  ##
-################################
-echo -e " ${LRED}-${NC}${WHITE} Installing Anaconda Project...${NC}"
-
-~/miniconda3/bin/conda activate base
-~/miniconda3/bin/conda install -y anaconda-project
 
 ###################################
 ##  Install Python Dependencies  ##
@@ -70,13 +50,14 @@ echo -e " ${LRED}-${NC}${WHITE} Python Dependencies...${NC}"
 
 cd $BASEBALL
 
-sudo python3 -m pip install -r install/requirements.txt
+sudo apt -y install python3-pip
+sudo python3 -m pip install -r requirements.txt
 
 echo -e "Progress:25"
 sleep 1
 
 ################################
-##  Install NGINX  ##
+##  Install NGINX             ##
 ################################
 echo -e " ${LRED}-${NC}${WHITE} Installing Ubuntu Packages...${NC}"
 
@@ -90,7 +71,7 @@ sleep 1
 ##########################
 echo -e "\n ${LRED}-${NC}${WHITE} Setting up the database..${NC}\n"
 cd $BASEBALL
-sudo -u createdb -p 5432 baseball
+sudo -u postgres createdb -p 5432 baseball
 sudo -u postgres psql -p 5432 -d baseball -f sql/00_create_databases.sql
 sudo -u postgres psql -p 5432 -d baseball -f sql/01_grant_user_perms.sql
 
@@ -106,10 +87,10 @@ sleep 1
 ##########################
 echo -e "\n ${LRED}-${NC}${WHITE} Setting up the admin user ${NC}${ORANGE}*INPUT REQUIRED*..${NC}\n"
 sudo python3 -m manage createsuperuser
-
+sudo python3 -m manage fix_missing_profiles
 
 ##########################
-## Install UI             ##
+## Install UI           ##
 ##########################
 echo -e "\n ${LRED}-${NC}${WHITE} Installing UI..${NC}\n"
 cd $BASEBALL/client
@@ -134,7 +115,6 @@ sleep 1
 echo -e " ${LRED}-${NC}${WHITE} Setting Sym Links...${NC}"
 
 cd $BASEBALL
-echo $BASEBALL
 sudo ln -s $BASEBALL /var/www
 sudo ln -s $BASEBALL/runserver.service /etc/systemd/system/
 sudo ln -s $BASEBALL/baseball_nginx.conf /etc/nginx/sites-enabled/
