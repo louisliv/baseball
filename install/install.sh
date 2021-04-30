@@ -51,7 +51,7 @@ echo -e " ${LRED}-${NC}${WHITE} Python Dependencies...${NC}"
 cd $BASEBALL
 
 sudo apt -y install python3-pip
-sudo python3 -m pip install -r requirements.txt
+sudo python3 -m pip install -r install/requirements.txt
 
 echo -e "Progress:25"
 sleep 1

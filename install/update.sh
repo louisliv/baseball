@@ -14,7 +14,7 @@ BASEBALL=`pwd`
 
 clear
 echo -e " ${LRED}########################################${NC}"
-echo -e " ${LRED}#${NC}  ${GREEN}Installing Scorekeeping App${NC} ${LRED}#${NC}"
+echo -e " ${LRED}#${NC}  ${GREEN}Updating Scorekeeping App${NC} ${LRED}#${NC}"
 echo -e " ${LRED}########################################${NC}"
 echo -e "Progress:1"
 
@@ -25,7 +25,7 @@ echo -e " ${LRED}-${NC}${WHITE} Updating Python Dependencies...${NC}"
 
 cd $BASEBALL
 
-sudo python3 -m pip install -r requirements.txt
+sudo python3 -m pip install -r install/requirements.txt
 
 echo -e "Progress:25"
 sleep 1
