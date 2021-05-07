@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
+    'sitemonitor',
     'api',
     'siteauth',
     'baseball',
@@ -188,3 +189,5 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ],
 }
+
+SITEMONITOR_PATH = 'sitemonitor'
