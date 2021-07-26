@@ -72,6 +72,7 @@ export default {
     },
 
     login(creds) {
+        console.log('in action');
         let currentState = store.getState();
 
         if (!_.isEmpty(currentState.currentUser)) {

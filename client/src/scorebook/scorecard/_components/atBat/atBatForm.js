@@ -1,6 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
 
 import _ from "lodash";
+
+import { AT_BAT_ACTIONS } from "./atBat";
 
 import { Outcomes } from "../../models";
 
@@ -18,111 +20,68 @@ import Select from 'react-select';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons'
 
-class AtBatForm extends Component {
-    constructor(props) {
-        super(props);
+const AtBatForm = (props) => {
 
-        this.state = {
-            atBat: props.atBat
-        }
-
-        this.handleChange = this.handleChange.bind(this);
-        this.handleNumberButton = this.handleNumberButton.bind(this);
-    }
-
-    handleChange(e) {
-        var atBat = this.state.atBat;
-
-        if (e.target) {
-            atBat[e.target.name] = e.target.value;
-        } else {
-            atBat["outcome"] = e.value;
-        }
-
-        this.setState({
-            atBat: atBat
-        })
-    }
-
-    handleNumberButton(e, type, operation) {
+    const submit = (e) => {
         e.preventDefault();
-        var atBat = this.state.atBat;
-
-        if (operation === "minus") {
-            if (type === "balls") {
-                atBat.removeBall();
-            } else {
-                atBat.removeStrike();
-            }
-        } else {
-            if (type === "balls") {
-                atBat.addBall();
-            } else {
-                atBat.addStrike();
-            }
-        }
-
-        this.setState({
-            atBat: atBat
-        });
+        console.log(props.atBat)
+        props.handleSubmit(e, props.inning, props.atBat)
     }
 
-    render() {
-        return (
-            <Form onSubmit={(event) =>{this.props.handleSubmit(event, this.props.inning, this.state.atBat)}}>
-                <FormGroup>
-                    <Label>Balls</Label>
-                    <InputGroup>
-                        <InputGroupAddon addonType="prepend">
-                            <Button onClick={(e) => this.handleNumberButton(e, "balls", "minus")}>
-                                <FontAwesomeIcon icon={faMinus}/>
-                            </Button>
-                        </InputGroupAddon>
-                        <Input type="number" 
-                            min={0} 
-                            max={4}
-                            name="balls"
-                            value={this.state.atBat.balls}
-                            onChange={this.handleChange}
-                            className="pitch-result"/>
-                        <InputGroupAddon addonType="append">
-                            <Button onClick={(e) => this.handleNumberButton(e, "balls", "plus")}>
-                                <FontAwesomeIcon icon={faPlus}/>
-                            </Button>
-                        </InputGroupAddon>
-                    </InputGroup>
-                </FormGroup>
-                <FormGroup>
-                    <Label>Strikes</Label>
-                    <InputGroup>
-                        <InputGroupAddon addonType="prepend">
-                            <Button onClick={(e) => this.handleNumberButton(e, "strikes", "minus")}>
-                                <FontAwesomeIcon icon={faMinus}/>
-                            </Button>
-                        </InputGroupAddon>
-                        <Input type="number" 
-                            min={0} 
-                            max={3}
-                            name="strikes"
-                            value={this.state.atBat.strikes}
-                            onChange={this.handleChange}
-                            className="pitch-result"/>
-                        <InputGroupAddon addonType="append">
-                            <Button type="plus" onClick={(e) => this.handleNumberButton(e, "strikes", "plus")}>
-                                <FontAwesomeIcon icon={faPlus}/>
-                            </Button>
-                        </InputGroupAddon>
-                    </InputGroup>
-                </FormGroup>
-                <FormGroup>
-                    <Label>Outcome</Label>
-                    <Select options={_.clone(Outcomes)}
-                        name="outcome"
-                        onChange={(event) =>{this.handleChange(event)}}/>
-                </FormGroup>
-            </Form>
-        )
-    }
+    return (
+        <Form onSubmit={submit}>
+            <FormGroup>
+                <Label>Balls</Label>
+                <InputGroup>
+                    <InputGroupAddon addonType="prepend">
+                        <Button onClick={() => props.dispatch({type: AT_BAT_ACTIONS.REMOVE_BALL})}>
+                            <FontAwesomeIcon icon={faMinus}/>
+                        </Button>
+                    </InputGroupAddon>
+                    <Input type="number" 
+                        min={0} 
+                        max={4}
+                        name="balls"
+                        value={props.atBat.balls}
+                        onChange={() => props.dispatch({type: AT_BAT_ACTIONS.SET_BALLS})}
+                        className="pitch-result"/>
+                    <InputGroupAddon addonType="append">
+                        <Button onClick={() => props.dispatch({type: AT_BAT_ACTIONS.ADD_BALL})}>
+                            <FontAwesomeIcon icon={faPlus}/>
+                        </Button>
+                    </InputGroupAddon>
+                </InputGroup>
+            </FormGroup>
+            <FormGroup>
+                <Label>Strikes</Label>
+                <InputGroup>
+                    <InputGroupAddon addonType="prepend">
+                        <Button onClick={() => props.dispatch({type: AT_BAT_ACTIONS.REMOVE_STRIKE})}>
+                            <FontAwesomeIcon icon={faMinus}/>
+                        </Button>
+                    </InputGroupAddon>
+                    <Input type="number" 
+                        min={0} 
+                        max={3}
+                        name="strikes"
+                        value={props.atBat.strikes}
+                        onChange={() => props.dispatch({type: AT_BAT_ACTIONS.SET_STRIKES})}
+                        className="pitch-result"/>
+                    <InputGroupAddon addonType="append">
+                        <Button onClick={() => props.dispatch({type: AT_BAT_ACTIONS.ADD_STRIKE})}>
+                            <FontAwesomeIcon icon={faPlus}/>
+                        </Button>
+                    </InputGroupAddon>
+                </InputGroup>
+            </FormGroup>
+            <FormGroup>
+                <Label>Outcome</Label>
+                <Select options={_.clone(Outcomes)}
+                    name="outcome"
+                    onChange={event => props.dispatch({type:AT_BAT_ACTIONS.SET_OUTCOME, payload: event.value})}/>
+            </FormGroup>
+        </Form>
+    )
 }
 
 export default AtBatForm;

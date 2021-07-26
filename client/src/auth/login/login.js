@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { useState } from 'react';
 // import { Auth } from "api/models/auth/auth";
 import AuthActions from 'store/action-creators/auth';
 import { router } from 'router';
@@ -17,73 +16,57 @@ import {
     CardBody
 } from 'reactstrap';
 
-class ConnectedLogin extends Component {
-    constructor(props) {
-        super(props)
+export const Login = () => {
+    const [creds, setCreds] = useState({});
 
-        this.state = {
-            creds: {
-                username: '',
-                password: ''
-            }
-        }
-    }
-
-    update = (name, e) => {
-        var creds = this.state.creds;
-        creds[name] = e.target.value;
-        this.setState({ creds: creds });
-    }
-
-    onSubmit = (e) => {
+    const onSubmit = (e) => {
         e.preventDefault();
-        AuthActions.login(this.state.creds)
+        console.log('here')
+        AuthActions.login(creds)
             .then(() => {
+                console.log('now here')
                 router.stateService.go('scorebook.teamList');
             })
     }
 
-    render() {
-        return (
-            <Container>
-                <Row>
-                    <Col sm="12" md={{size: 6, offset: 3}}>
-                        <Card>
-                            <CardBody>
-                                <Form onSubmit={this.onSubmit}>
-                                    <FormGroup>
-                                        <Label>Username</Label>
-                                        <Input 
-                                            type="text" 
-                                            placeholder="johndoe"
-                                            value={this.state.creds.username}
-                                            onChange={(e) => this.update("username", e)}/>
-                                    </FormGroup>
-                                    <FormGroup>
-                                        <Label>Password</Label>
-                                        <Input 
-                                            type="password" 
-                                            placeholder="password#1"
-                                            value={this.state.creds.password}
-                                            onChange={(e) => this.update("password", e)}/>
-                                    </FormGroup>
-                                    <FormGroup className="text-right">
-                                        <Button type='submit' color="success">Login</Button>
-                                    </FormGroup>
-                                </Form>
-                            </CardBody>
-                        </Card>
-                    </Col>
-                </Row>
-            </Container>
-        )
+    const handleInputChange = (e) => {
+        e.persist();
+        setCreds(inputs => ({...creds, [e.target.name]: e.target.value}));
     }
+
+    return (
+        <Container>
+            <Row>
+                <Col sm="12" md={{size: 6, offset: 3}}>
+                    <Card>
+                        <CardBody>
+                            <Form onSubmit={onSubmit}>
+                                <FormGroup>
+                                    <Label>Username</Label>
+                                    <Input 
+                                        type="text" 
+                                        placeholder="johndoe"
+                                        name="username"
+                                        value={creds.username}
+                                        onChange={handleInputChange}/>
+                                </FormGroup>
+                                <FormGroup>
+                                    <Label>Password</Label>
+                                    <Input 
+                                        type="password" 
+                                        placeholder="password#1"
+                                        name="password"
+                                        value={creds.password}
+                                        onChange={handleInputChange}/>
+                                </FormGroup>
+                                <FormGroup className="text-right">
+                                    <Button type='submit' color="success">Login</Button>
+                                </FormGroup>
+                            </Form>
+                        </CardBody>
+                    </Card>
+                </Col>
+            </Row>
+        </Container>
+    )
 }
-
-const mapStateToProps = state => {
-    return {}
-}
-
-const Login = connect(mapStateToProps)(ConnectedLogin);
-
-export {Login};

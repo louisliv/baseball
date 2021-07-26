@@ -100,6 +100,8 @@ class Scorecard extends Component {
         event.preventDefault();
         this.closeModal()
 
+        console.log(atBat)
+
         var scorecard = this.state.scorecard;
 
         scorecard.addAtBat(inning, atBat);
