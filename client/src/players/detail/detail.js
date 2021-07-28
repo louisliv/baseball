@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Row,
     Col,
@@ -13,73 +13,69 @@ import {
 import StatTable from 'utils/stats-table';
 import Constants from 'utils/constants';
 
-import { connect } from 'react-redux';
-
 import PlayerActions from 'store/action-creators/players';
 import PlayerSelectors from 'store/selectors/players';
 
 import classnames from 'classnames';
 
 
-class PlayerDetail extends Component {
+const PlayerDetail = (props) => {
+    const player = PlayerSelectors.one(state => state.players, props.$stateParams.id);
+    const seasonStats = PlayerSelectors.seasonStats(state => state.players, props.$stateParams.id);
+    const careerStats = PlayerSelectors.careerStats(state => state.players, props.$stateParams.id);
+    const fieldingStats = PlayerSelectors.fieldingStats(state => state.players, props.$stateParams.id);
 
-    componentWillMount() {
-        PlayerActions.get(this.props.$stateParams.id);
-        PlayerActions.getCareerStats(this.props.$stateParams.id);
-        PlayerActions.getSeasonStats(this.props.$stateParams.id);
-        PlayerActions.getFieldingStats(this.props.$stateParams.id);
-    }
+    const [activeTab, setActiveTab] = useState('1');
+    const [isPitcher, setIsPitcher] = useState(false)
+    const [title, setTitle] = useState('');
+    const [headers, setHeaders] = useState([]);
+    const [careerHeaders, setCareerHeaders] = useState([]);
 
-    constructor(props) {
-        super(props);
-        this.toggle = this.toggle.bind(this);
-        this.state = {
-            activeTab: '1'
-        };
-    }
+    useEffect(() => {
+        PlayerActions.get(props.$stateParams.id);
+        PlayerActions.getCareerStats(props.$stateParams.id);
+        PlayerActions.getSeasonStats(props.$stateParams.id);
+        PlayerActions.getFieldingStats(props.$stateParams.id);
+    })
     
-    toggle(tab) {
-        if (this.state.activeTab !== tab) {
-            this.setState({
-                activeTab: tab
-            });
+    const toggle = (tab) => {
+        if (activeTab !== tab) {
+            setActiveTab(tab);
         }
     }
 
-    setIsPitcher() {
-        if (this.props.seasonStats.group) {
-            if (this.props.seasonStats.group.displayName === 'pitching') {
-                this.isPitcher = true
+    const loadData = () => {
+        if (seasonStats.group) {
+            if (seasonStats.group.displayName === 'pitching') {
+                setIsPitcher(true)
             }
         } else {
-            this.isPitcher = false;
+            setIsPitcher(false);
         }
-    }
-
-    loadData() {
-        this.setIsPitcher();
         
-        if (this.isPitcher) {
-            this.title = 'Pitching Stats'
-            this.headers = Constants.PITCHING_HEADERS
+        if (isPitcher) {
+            setTitle('Pitching Stats');
+            setHeaders(Constants.PITCHING_HEADERS)
         } else {
-            this.title ='Hitting Stats'
-            this.headers = Constants.HITTING_HEADERS
+            setTitle('Hitting Stats')
+            setHeaders(Constants.HITTING_HEADERS)
         }
 
-        this.careerHeaders = _.remove(_.clone(this.headers), (item) => {
+        let careerHeadersArr = _.remove(_.clone(headers), (item) => {
             return item.dataField !== 'season' && item.dataField !== 'team.name';
         });
+
+        setCareerHeaders(careerHeadersArr);
 
         return (
             <Row>
                 <Col xs="12">
                     <div style={{display: 'flex'}}>
                         <img 
-                            src={Constants.getPlayerHeadshotUrl(this.props.player.id)} 
-                            alt={this.props.player.fullName}/>
+                            src={Constants.getPlayerHeadshotUrl(player.id)} 
+                            alt={player.fullName}/>
                         <div>
-                            <h2>{this.props.player.fullName}</h2>
+                            <h2>{player.fullName}</h2>
                         </div>
                     </div>
                 </Col>
@@ -87,25 +83,25 @@ class PlayerDetail extends Component {
                     <Nav tabs>
                         <NavItem>
                             <NavLink
-                                className={classnames({ active: this.state.activeTab === '1' })}
-                                onClick={() => { this.toggle('1'); }}
+                                className={classnames({ active: activeTab === '1' })}
+                                onClick={() => { toggle('1'); }}
                                 >
                                 Career
                             </NavLink>
                         </NavItem>
                         <NavItem>
                             <NavLink
-                                className={classnames({ active: this.state.activeTab === '2' })}
-                                onClick={() => { this.toggle('2'); }}
+                                className={classnames({ active: activeTab === '2' })}
+                                onClick={() => { toggle('2'); }}
                                 style={{textTransform: 'capitalize'}}
                                 >
-                                {this.props.seasonStats.group ? this.props.seasonStats.group.displayName: ''}
+                                {seasonStats.group ? seasonStats.group.displayName: ''}
                             </NavLink>
                         </NavItem>
                         <NavItem>
                             <NavLink
-                                className={classnames({ active: this.state.activeTab === '3' })}
-                                onClick={() => { this.toggle('3'); }}
+                                className={classnames({ active: activeTab === '3' })}
+                                onClick={() => { toggle('3'); }}
                                 >
                                 Fielding
                             </NavLink>
@@ -113,29 +109,29 @@ class PlayerDetail extends Component {
                     </Nav>
                 </Col>
                 <Col xs="12">
-                    <TabContent activeTab={this.state.activeTab}>
+                    <TabContent activeTab={activeTab}>
                         <TabPane tabId="1">
                             <StatTable
                                 title="Career Stats"
-                                headers={this.careerHeaders}
-                                data={this.props.careerStats.splits}
-                                pitching={this.isPitcher}
+                                headers={careerHeaders}
+                                data={careerStats.splits}
+                                pitching={isPitcher}
                                 keyField="sport.abbreviation"/>
                         </TabPane>
                         <TabPane tabId="2">
                             <StatTable
-                                title={this.title}
-                                headers={this.headers}
-                                data={this.props.seasonStats.splits}
-                                pitching={this.isPitcher}
+                                title={title}
+                                headers={headers}
+                                data={seasonStats.splits}
+                                pitching={isPitcher}
                                 keyField="index"/>
                         </TabPane>
                         <TabPane tabId="3">
                             <StatTable
                                 title="Fielding Stats"
                                 headers={Constants.FIELDING_HEADERS}
-                                data={this.props.fieldingStats.splits}
-                                pitching={this.isPitcher}
+                                data={fieldingStats.splits}
+                                pitching={isPitcher}
                                 keyField="index"/>
                         </TabPane>
                     </TabContent>
@@ -144,19 +140,8 @@ class PlayerDetail extends Component {
         );
     }
 
-    render() {
-        return (this.loadData());
-    }
+    return (loadData());
 }
 
-const mapStateToProps = (state, ownProps) => {
-    return {
-        player: PlayerSelectors.one(state.players, ownProps.$stateParams.id),
-        seasonStats: PlayerSelectors.seasonStats(state.players, ownProps.$stateParams.id),
-        careerStats: PlayerSelectors.careerStats(state.players, ownProps.$stateParams.id),
-        fieldingStats: PlayerSelectors.fieldingStats(state.players, ownProps.$stateParams.id)
-    }
-}
 
-const ConnectedComponent = connect(mapStateToProps)(PlayerDetail)
-export default ConnectedComponent;
+export default PlayerDetail;

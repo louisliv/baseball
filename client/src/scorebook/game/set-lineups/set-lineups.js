@@ -114,8 +114,7 @@ const mapStateToProps = (state, ownProps) => {
     return {
         currentUser: state.currentUser,
         game: GameSelectors.one(state.games, ownProps.$stateParams.gameId),
-        scorecard: ScorecardSelectors.byGame(state.scorecards, 
-            ownProps.$stateParams.gameId, state.currentUser.id),
+        scorecard: ScorecardSelectors.byGame(state, ownProps.$stateParams.gameId),
         awayTeamRoster: TeamSelectors.rosterByDate(
             state.teams,
             ownProps.$stateParams.awayTeamId,

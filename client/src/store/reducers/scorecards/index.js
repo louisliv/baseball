@@ -38,8 +38,6 @@ function scorecards(state = initialState, action) {
 
         case Actions.SCORECARDS_ADD_SUCCESS:
         case Actions.SCORECARDS_UPDATE_SUCCESS:
-            newById = _.clone(state.byId);
-            newById[action.payload.scorecard.id] = action.payload.scorecard;
             newByGame = _.clone(state.byGame);
             gameId = action.payload.scorecard.game_id;
             userId = action.payload.scorecard.user
@@ -50,10 +48,11 @@ function scorecards(state = initialState, action) {
 
             newByGame[gameId][userId] = action.payload.scorecard
 
-            return Object.assign({}, state, {
-                byId: newById,
-                byGame: newByGame
-            })
+            return {
+                ...state,
+                byId: {...state.byId, [action.payload.scorecard.id]: action.payload.scorecard},
+                byGame: {...state.byGame, [gameId]: newByGame[gameId]}
+            }
             
         default:
             return state
