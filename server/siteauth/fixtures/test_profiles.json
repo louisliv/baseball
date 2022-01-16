@@ -1,0 +1,11 @@
+[
+{
+    "model": "siteauth.profile",
+    "pk": 1,
+    "fields": {
+        "user": 1,
+        "avatar": "",
+        "teams": "[]"
+    }
+}
+]

@@ -2,7 +2,6 @@
 FROM python:3
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
-WORKDIR /server
-COPY . /server/
-COPY ~/.docker_env /server/
-RUN pip install -r requirements.txt
+WORKDIR /usr/src/server
+COPY requirements.txt /usr/src/server/
+RUN pip install --no-cache-dir -r requirements.txt
