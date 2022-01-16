@@ -1,6 +1,6 @@
 from rest_framework import serializers
+from .models import Profile
 
-from .models import Profile, Todo
 
 class ProfileSerializer(serializers.ModelSerializer):
     email = serializers.SerializerMethodField()
@@ -37,9 +37,3 @@ class ProfileSerializer(serializers.ModelSerializer):
             return url
         except:
             return None
-
-class TodoSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Todo
-        fields = ('id', 'title', 'completed')

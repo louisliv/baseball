@@ -80,9 +80,6 @@ class Team40ManRoster(models.Model):
 class PlayerStats(models.Model):
     year = models.IntegerField()
     player = models.ForeignKey(Player, related_name='stats', on_delete=models.CASCADE)
-    pitching_stats = JSONField()
-    hitting_stats = JSONField()
-    fielding_stats = JSONField()
 
     def __str__(self):
         return '%s - %s' % (self.player, self.year)

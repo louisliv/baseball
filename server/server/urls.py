@@ -18,8 +18,7 @@ from django.conf.urls import url, include
 from django.conf.urls.static import static
 from django.contrib import admin
 from rest_framework import routers
-from siteauth.views import (AuthViewSet, ProfileViewSet, 
-    TodoViewSet)
+from siteauth.views import AuthViewSet, ProfileViewSet
 from baseball.views import (TeamViewSet, DivisionViewSet, 
     LeagueViewSet, PlayerViewSet, Team40ManRosterViewSet,
     PlayerStatsViewSet)

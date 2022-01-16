@@ -10,30 +10,13 @@ from rest_framework import permissions, viewsets
 from rest_framework.response import Response
 from rest_framework import status, views
 
-from .models import Profile, Todo
-from .serializers import ProfileSerializer, TodoSerializer
+from .models import Profile
+from .serializers import ProfileSerializer
 from django.contrib import auth
 
 from base64 import b64decode
 from django.core.files.base import ContentFile
 import sys
-
-class TodoViewSet(viewsets.ModelViewSet):
-    serializer_class = TodoSerializer
-    queryset = Todo.objects.all()
-    pagination_class = None
-
-    @action(methods=['post', 'put', 'patch'], detail=True,
-        url_path='mark-completed', url_name='mark_completed')
-    def mark_completed(self, request, pk=None):
-        todo = self.get_object()
-
-        todo.completed = not todo.completed
-
-        todo.save()
-
-        return Response(TodoSerializer(todo).data,
-            status=status.HTTP_200_OK)
 
 class ProfileViewSet(viewsets.ModelViewSet):
     serializer_class = ProfileSerializer
