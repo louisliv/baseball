@@ -12,7 +12,7 @@ class JSONSerializerField(serializers.Field):
 
 class ScorecardSerializer(serializers.HyperlinkedModelSerializer):
     user = serializers.SerializerMethodField()
-    data = serializers.JSONField()
+    data = serializers.SerializerMethodField()
 
     class Meta:
         model = Scorecard
@@ -20,3 +20,6 @@ class ScorecardSerializer(serializers.HyperlinkedModelSerializer):
 
     def get_user(self, obj):
         return obj.user.id
+
+    def get_data(self, obj):
+        return obj.get_data()

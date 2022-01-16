@@ -1,0 +1,36 @@
+version: "3.9"
+   
+services:
+  db:
+    image: postgres
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "postgres", "-U", "root" ]
+      timeout: 45s
+      interval: 10s
+      retries: 10
+    restart: always
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=password
+      - APP_DB_USER=baseball_user
+      - APP_DB_PASS=baseball_user
+      - APP_DB_NAME=baseball
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d/
+    ports:
+      - 5432:5432
+  server:
+    build: ./server/
+    command: python ./server/manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/server
+    ports:
+      - "8000:8000"
+    environment:
+      - POSTGRES_NAME=baseball
+      - POSTGRES_USER=baseball_user
+      - POSTGRES_PASSWORD=baseball_user
+    env_file: 
+      - ~/.docker_env
+    depends_on:
+      - db
