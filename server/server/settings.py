@@ -117,13 +117,17 @@ WSGI_APPLICATION = 'server.wsgi.application'
 #     }
 # }
 
+POSTGRES_NAME = os.environ.get('POSTGRES_NAME', None)
+POSTGRES_USER = os.environ.get('POSTGRES_USER', None)
+POSTGRES_PASSWORD = os.environ.get('POSTGRES_PASSWORD', None)
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'baseball',
-        'USER': 'baseball_user',
-        'PASSWORD': 'baseball_user',
-        'HOST': '127.0.0.1',
+        'NAME': POSTGRES_NAME,
+        'USER': POSTGRES_USER,
+        'PASSWORD': POSTGRES_PASSWORD,
+        'HOST': 'db',
         'PORT': '5432',
     }
 }
